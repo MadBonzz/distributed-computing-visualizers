@@ -2,17 +2,79 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Distributed Algorithms — Failure Lab</title>
 <style>
 :root{color-scheme:dark;--bg:#090d17;--panel:#111827;--panel2:#151e2f;--border:#29344c;--text:#e5eefc;--muted:#94a3b8;--blue:#6da9ff;--mint:#38d5ac;--amber:#f7c768;--red:#fa7b81;--purple:#b69afa;--surface:#1c283c}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 65% -20%,#1a2950 0%,transparent 56%),var(--bg);font:14px/1.45 Inter,ui-sans-serif,system-ui,Segoe UI,Arial,sans-serif;color:var(--text)}button,input,select,textarea{font:inherit}button{background:#1c2b45;color:var(--text);border:1px solid #344462;border-radius:9px;padding:8px 11px;cursor:pointer;transition:background .15s}button:hover:not(:disabled){background:#2b3e60}button:disabled{opacity:.34;cursor:not-allowed}.primary{background:#266af0;color:#fff;border-color:#377bff}.primary:hover:not(:disabled){background:#3a7cf9}.danger{background:#493038;color:#ffb3ba;border-color:#7b4750}.ghost{border-color:transparent;background:transparent}.small{font-size:12px;padding:5px 8px;border-radius:7px}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:3px 9px;font-size:11px;background:#22334d;border:1px solid #344963;color:#d3e4fa}.ok{color:var(--mint)}.warn{color:var(--amber)}.bad{color:var(--red)}.info{color:var(--blue)}.muted{color:var(--muted)}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}h1,h2,h3,p{margin:0}h2{font-size:17px}h3{font-size:13px;letter-spacing:.02em}p{line-height:1.5}.shell{display:grid;grid-template-columns:244px minmax(450px,1fr) 342px;min-height:100vh}.sidebar{border-right:1px solid var(--border);background:#0b1220;position:sticky;top:0;height:100vh;overflow:auto;padding:21px 14px}.brand{padding:4px 8px 18px;border-bottom:1px solid var(--border);margin-bottom:17px}.brand .mark{font-size:25px;margin-bottom:5px}.brand h1{font-size:19px;letter-spacing:-.03em}.brand p{font-size:12px;color:var(--muted);margin-top:5px}.navgroup{color:var(--muted);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:15px 10px 8px;font-weight:700}.nav{display:flex;align-items:center;gap:10px;width:100%;text-align:left;margin:3px 0;padding:10px 11px;background:transparent;border:1px solid transparent;color:#b3c4df}.nav.active{background:#183052;color:#e3f2ff;border-color:#2b527f}.nav .ico{font-size:16px;width:22px;text-align:center}.nav .txt{flex:1}.nav .mini{font-size:10px;color:#7184a0}.main{min-width:0;padding:22px 26px 35px;max-height:100vh;overflow:auto}.right{border-left:1px solid var(--border);background:#0e1523;height:100vh;overflow:auto;padding:20px 16px}.topline{display:flex;align-items:start;justify-content:space-between;gap:16px;flex-wrap:wrap}.eyebrow{font-size:11px;color:var(--mint);letter-spacing:.13em;text-transform:uppercase;font-weight:700}.heading{font-size:28px;line-height:1.2;letter-spacing:-.05em;margin:5px 0 9px}.subtitle{font-size:13px;color:#aabbce;max-width:770px}.tools{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}.panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;margin-top:16px;overflow:hidden}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border)}.panel-body{padding:15px 16px}.metric-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:13px}.metric{padding:10px 13px;background:#111c2e;border:1px solid var(--border);border-radius:10px;min-width:110px}.metric b{font-size:17px;display:block}.metric span{font-size:11px;color:var(--muted)}.config{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.config label{color:var(--muted);font-size:12px}.config input[type=number]{width:53px}.field{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#acbed6}.field input,.field select,.field textarea, input.number,select.slim{width:100%;background:#0a1221;border:1px solid #37445e;border-radius:8px;color:#ecf3ff;padding:8px 9px;outline:none;min-width:0}.field input:focus,.field select:focus,.field textarea:focus{border-color:#6da9ff}.field textarea{resize:vertical;min-height:70px}.fieldset{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:10px}.graph-svg{width:100%;height:auto;display:block;max-height:380px}.graph-node{cursor:pointer}.graph-node circle{stroke:#53759b;stroke-width:2;fill:#1e3454}.graph-node.selected circle{stroke:#84c3ff;stroke-width:4}.graph-node.crashed circle{fill:#4c2737;stroke:#a45465}.graph-node text{font:600 14px ui-monospace,monospace;fill:#ecf5ff;pointer-events:none}.graph-count{font:700 11px ui-monospace,monospace;fill:#b7dbff;paint-order:stroke;stroke:#08101c;stroke-width:4px}.nodes{display:grid;grid-template-columns:repeat(auto-fit,minmax(193px,1fr));gap:11px}.node{background:#111d30;border:1px solid #34435d;border-radius:12px;padding:12px;position:relative;cursor:pointer;min-height:158px;transition:.12s}.node:hover{border-color:#7695c4}.node.selected{outline:1px solid #76aaff;border-color:#76aaff;background:#152744}.node.dead{opacity:.64;background:#201b29;border-color:#633b4b}.node .label{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.node .label b{font-size:16px}.node .dot{height:7px;width:7px;border-radius:50%;display:inline-block;margin-right:7px;background:var(--mint);box-shadow:0 0 0 3px #33d5ac20}.node.dead .dot{background:var(--red);box-shadow:0 0 0 3px #fa7b8125}.node .kv{display:flex;justify-content:space-between;gap:8px;margin:4px 0;font-size:12px}.node .kv span:first-child{color:var(--muted)}.node .kv span:last-child{font-family:ui-monospace,monospace;text-align:right;overflow-wrap:anywhere}.node .stamp{display:inline-block;margin-top:9px;padding:3px 6px;background:#283751;border-radius:5px;font:11px ui-monospace,monospace;color:#cfe0f6}.section-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8098b9;margin:20px 0 10px}.queue{display:flex;flex-direction:column;gap:8px;max-height:440px;overflow-y:auto}.msg{border:1px solid #35435b;background:#111d2e;padding:10px;border-radius:10px}.msg-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.msg .type{font:12px ui-monospace,monospace;color:#9dc5ff;font-weight:700}.msg .path{font:12px ui-monospace,monospace;color:#c9d7e9}.msg .detail{font:11px ui-monospace,monospace;color:#97a5bd;word-break:break-word;margin:6px 0 9px}.msg .actions{display:flex;gap:5px;flex-wrap:wrap}.right h2{font-size:17px}.hint{background:#1c2940;border-left:3px solid #6ea7ff;border-radius:8px;padding:10px 12px;font-size:12px;color:#bdd1ed;line-height:1.55}.inspector{border:1px solid #35435c;border-radius:12px;padding:13px;margin-top:10px;background:#121e30}.inspector .row-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.top-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.trace{display:flex;flex-direction:column;gap:0;max-height:260px;overflow:auto;counter-reset:events}.logline{display:grid;grid-template-columns:33px 1fr;gap:9px;padding:7px 8px;border-bottom:1px solid #22314b;font-size:12px;color:#b7c8e0}.logline .num{color:#60738c;font-family:monospace}.logline.note{color:#9fbbf1}.logline.alert{color:#f2bb75}.logline.failure{color:#ff9ba3}.empty{font-size:12px;color:var(--muted);padding:17px 0}.banner{background:#202c44;border:1px solid #3b506e;color:#cbdaf0;padding:11px 14px;border-radius:10px;font-size:12px;margin-top:15px}.banner.bad{background:#3d2430;border-color:#7b3f4e;color:#ffc4cb}.banner.good{background:#13332e;border-color:#286858;color:#b1ffdc}.banner.warn{background:#3a3025;border-color:#87653a;color:#ffe0b2}.card-help{font-size:12px;color:#a8bedc;margin-top:11px;line-height:1.7}.card-help b{color:#e6eefb}.right .separator{border-top:1px solid var(--border);margin:18px 0}.checks{display:flex;flex-direction:column;gap:8px}.check{display:flex;align-items:start;gap:9px;font-size:12px;border:1px solid #34425a;background:#121e2e;padding:9px;border-radius:9px}.check .symbol{font-size:15px}.check .desc{font-size:11px;color:var(--muted)}.shortcut{font:11px ui-monospace,monospace;color:#7187a5;margin-top:10px}.footerlink{font-size:11px;color:#9ab9ed;display:inline-block;margin-top:8px}a{color:#9fc2ff}.modalback{position:fixed;inset:0;background:#000b;display:none;place-items:center;z-index:20;padding:18px}.modalback.show{display:grid}.modal{max-width:620px;width:100%;max-height:86vh;overflow:auto;padding:20px;background:#141f32;border:1px solid #486080;border-radius:16px}.modal .close{float:right}.modal h2{margin-bottom:13px}.modal p{color:var(--muted);font-size:12px;margin:6px 0 16px}.presets{display:flex;gap:7px;flex-wrap:wrap}.pre{display:block;text-align:left;padding:9px 11px;background:#182840;border:1px solid #355275;border-radius:8px;font-size:12px;margin:6px 0;width:100%}.pre .desc{display:block;font-size:11px;color:#9bb0cb;margin-top:3px}.controlgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tight{margin-top:6px}.spacer{flex:1}.inset{border:1px solid #2f3f57;border-radius:9px;padding:11px;background:#0d192a;margin-top:10px}.inset strong{font-size:12px}.right .field{margin-top:10px}::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#33435c;border-radius:8px}::-webkit-scrollbar-track{background:transparent}@media(max-width:1220px){.shell{grid-template-columns:190px minmax(350px,1fr) 300px}.main{padding:20px 15px}.sidebar{padding:16px 9px}}@media(max-width:920px){.shell{grid-template-columns:160px minmax(0,1fr)}.right{grid-column:2;height:auto;border-left:0;border-top:1px solid var(--border)}.main{max-height:none}.sidebar{height:100vh}}@media(max-width:590px){.shell{display:block}.sidebar{position:relative;height:auto}.sidebar .navgroup{display:none}.sidebar #nav{display:flex;overflow:auto}.sidebar .nav{white-space:nowrap;width:auto}.sidebar .nav .mini{display:none}.brand{padding-bottom:9px;margin-bottom:8px}.main{padding:15px}.heading{font-size:23px}.fieldset{grid-template-columns:1fr}}
+body{background:#0c121c}
+.shell{grid-template-columns:218px minmax(0,1fr)}
+.sidebar{background:#101926;padding:24px 12px}
+.brand h1{font-size:23px}
+.main{width:min(100%,1120px);margin:0 auto;max-height:none;overflow:visible;padding:34px clamp(20px,4vw,60px) 64px}
+.heading{font-size:clamp(26px,3vw,36px);letter-spacing:-.045em}
+.subtitle{font-size:15px;line-height:1.55;color:#b6c6d7}
+.topline{align-items:center}
+#sourceLink{font-size:12px;color:#a4c8e9}
+.navgroup{padding-top:16px}
+.nav{padding:8px 9px;margin:1px 0}
+#extraNav{border-top:1px solid var(--border);margin-top:22px;padding-top:15px}
+#extraNav summary{font-size:12px;color:#a6b7ca;cursor:pointer}
+.setupbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+.setupbar label,.progress-label{font-size:12px;color:#a4b8cb}
+.setupbar select{width:auto;max-width:100%}
+.example-info{margin-top:8px;color:#b3c7db;font-size:13px}
+.example-info:empty{display:none}
+.guide{margin-top:20px;padding:clamp(17px,2vw,26px);background:#15262e;border:1px solid #355454;border-left:3px solid #72d9bb;border-radius:12px}
+.guide h2{font-size:clamp(20px,2.4vw,26px);margin:4px 0 6px;letter-spacing:-.03em}
+.guide p{color:#c0d0d9;font-size:14px;max-width:78ch}
+.progress-label{color:#93cfbd;font-weight:650}
+.guide .tools{margin:17px 0 0}
+#runAction{color:#0d2925;background:#8de0bf;border-color:#9be9ca;font-weight:700}
+#runAction:disabled{opacity:.55}
+#lastStep:not(:empty){border-top:1px solid #364951;margin-top:15px;padding-top:10px;font-size:13px;color:#d1e7df}
+[hidden]{display:none!important}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.settings-grid .field{margin:9px 0}.settings-grid .inset,.settings-grid .inspector{margin-top:6px}
+.state-scroll{overflow-x:auto}
+.state-table{width:100%;border-collapse:collapse;text-align:left;font-size:13px;font-variant-numeric:tabular-nums}
+.state-table th,.state-table td{padding:10px 13px;border-bottom:1px solid #243047;vertical-align:middle}
+.state-table th{font-size:12px;font-weight:550;color:#a7b8cb;background:#131e2d}
+.state-table td{overflow-wrap:anywhere;min-width:60px}
+.state-table tr:last-child td{border-bottom:0}
+.state-table .pick{font-size:13px;padding:3px 8px;background:#1c3046;color:#c9e1ff}
+.state-table .crashed td{color:#eba7ad}
+.table-hint,.checkline{font-size:12px}
+.fold{margin-top:15px;border:1px solid var(--border);border-radius:10px;background:#101925}
+.fold summary{padding:14px 17px;cursor:pointer;font-size:14px;font-weight:600}
+.fold-body{padding:0 16px 16px}
+.fold .checks,.fold .queue{margin:12px 0}
+.checkline{display:block;margin-top:12px;color:var(--muted)}
+button:focus-visible,summary:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #95d5fa;outline-offset:2px}
+@media(max-width:840px){.shell{grid-template-columns:172px minmax(0,1fr)}.main{padding:21px 15px}.settings-grid{grid-template-columns:1fr}.sidebar{padding:18px 8px}}
+@media(max-width:590px){.shell{display:block}.main{padding:16px 12px 36px}.sidebar{height:auto;padding:12px}.sidebar #nav{display:block}.sidebar .navgroup{display:block}.sidebar .nav{width:100%;white-space:normal}.brand{margin-bottom:0}.brand h1{font-size:18px}.sidebar nav,.sidebar #extraNav{display:none}#mobileMode{display:block!important;margin-top:10px}.sidebar #nav{display:none}.table-hint{display:none}.state-table th,.state-table td{padding:8px}.setupbar{margin-top:13px}.setupbar select{flex:1;min-width:0}.guide{margin-top:14px}.topline{gap:2px}}
+.known-value,.new-value{display:inline-block;padding:1px 6px;border-radius:4px;background:#1e2c3c}.new-value{color:#9becce;background:#1d3936}.step-key{color:#9becce}
 </style></head><body>
-<div class="shell"><aside class="sidebar"><div class="brand"><div class="mark">⌁</div><h1>Failure Lab <span style="color:#5fd4b4">/</span></h1><p>CS 5414 · Explore executions, not animations</p></div><div id="nav"></div><div style="margin:20px 8px;color:#778ba8;font-size:11px;line-height:1.6">Everything runs locally in your browser.<br>Seed arbitrary states · reorder messages · inject faults · inspect invariants.</div></aside>
-<main class="main"><div class="eyebrow">Interactive distributed systems workbench</div><div class="topline"><div><h1 class="heading" id="modeTitle"></h1><p class="subtitle" id="modeDesc"></p></div><div class="config"><label for="ninput">Nodes n</label><input id="ninput" type="number" min="2" max="10" class="number" value="5"><label for="finput">Fault bound f</label><input id="finput" type="number" min="0" max="9" class="number" value="2"><button class="small" id="applyConfig">Apply / reset</button></div></div>
-<div class="metric-row" id="metrics"></div><div id="status"></div>
-<div class="tools"><button class="primary" id="runAction">Start / run</button><button id="stepAction">Deliver next</button><button id="batchAction">Deliver 20</button><button id="randomAction">Random 20</button><button id="undoAction">↶ Undo</button><button id="resetAction">↻ Reset</button><button id="presetAction">⚙ Edge cases</button><button id="exportAction">Export state</button><button id="importAction">Import state</button></div>
-<div class="panel"><div class="panel-head"><h2>Network · pending transmissions</h2><label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)"><input id="focusEdges" type="checkbox"> Show selected node links only</label></div><div class="panel-body"><div id="graph" style="width:100%;overflow:hidden"></div></div></div>
-<div class="panel"><div class="panel-head"><h2>Process states</h2><span class="muted" style="font-size:12px">Select a node to edit durable state, input, or failure</span></div><div class="panel-body"><div class="nodes" id="nodes"></div></div></div>
-<div id="roundPanel"></div>
-<div class="panel"><div class="panel-head"><h2>Execution trace</h2><button class="small" id="clearLog">Clear trace</button></div><div class="panel-body"><div class="trace" id="trace"></div></div></div>
-<div class="card-help" id="modeHelp"></div></main>
-<aside class="right"><h2>Event scheduler</h2><p id="queueDesc" class="muted" style="font-size:12px;margin:4px 0 12px">Deliver, drop, duplicate, corrupt or reorder individual messages. Undelivered messages remain in flight, even if their sender crashes.</p><div id="queue" class="queue"></div><div class="separator"></div><h2>Selected process</h2><div id="inspector"></div><div class="separator"></div><h2>Scenario actions</h2><div id="scenario"></div><div class="separator"></div><h2>Properties & assumptions</h2><div id="checks" class="checks" style="margin-top:12px"></div></aside></div>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><h1>Failure Lab</h1><p>Cornell CS 5414 · Fall 2026</p></div>
+    <select id="mobileMode" class="slim" aria-label="Select simulation" hidden></select><nav aria-label="Course simulations" id="nav"></nav>
+    <details id="extraNav"><summary>Supplemental demos</summary><div id="extras"></div></details>
+  </aside>
+  <main class="main">
+    <header><div class="topline"><h1 class="heading" id="modeTitle"></h1><a id="sourceLink" target="_blank" rel="noopener noreferrer"></a></div><p class="subtitle" id="modeDesc"></p></header>
+    <div class="setupbar"><label for="example">Example</label><select class="slim" id="example"></select><button id="setupButton" aria-expanded="false" aria-controls="setup">Edit setup &amp; failures</button></div>
+    <div id="exampleInfo" class="example-info"></div>
+    <section id="setup" class="panel settings" hidden><div class="panel-head"><h2>Experiment setup</h2><button id="closeSetup" class="small">Close setup</button></div>
+      <div class="panel-body"><div class="config"><label for="ninput">Processes (n)</label><input id="ninput" type="number" min="2" max="10" class="number"><label for="finput">Fault bound (f)</label><input id="finput" type="number" min="0" max="9" class="number"><button class="small" id="applyConfig">Reset with these counts</button></div>
+        <div class="settings-grid"><div><label class="field" for="processPicker">Edit process<select id="processPicker"></select></label><div id="inspector"></div></div><div><h3>Protocol actions</h3><div id="scenario"></div></div></div>
+      </div></section>
+    <section class="guide" aria-label="Simulation controls"><div id="guideProgress" class="progress-label"></div><h2 id="guideTitle"></h2><p id="guideHint"></p>
+      <div class="tools"><button class="primary" id="runAction"></button><button id="undoAction">Undo step</button><button id="resetAction">Restart example</button></div>
+      <p id="lastStep" role="status"></p>
+    </section>
+    <div id="status"></div>
+    <section class="panel"><div class="panel-head"><h2>Process states</h2><span class="muted table-hint">Select a process to edit it</span></div><div class="state-scroll" id="nodes"></div></section>
+    <details class="fold" id="networkTools"><summary id="networkLabel">Network and message scheduling</summary><div class="fold-body"><div id="asyncTools"><p class="muted">Choose which message arrives next to test a different execution.</p><div id="queue" class="queue"></div></div><label class="checkline"><input id="focusEdges" type="checkbox"> Only show links for the selected process</label><div id="graph"></div><div id="roundPanel"></div></div></details>
+    <details class="fold" id="detailTools"><summary>Execution trace and property checks</summary><div class="fold-body"><div id="metrics" class="metric-row"></div><div id="checks" class="checks"></div><div class="panel-head"><h3>Trace · newest first</h3><button class="small" id="clearLog">Clear trace</button></div><div id="trace" class="trace"></div><div id="modeHelp" class="card-help"></div><div class="tools"><button id="exportAction">Save execution</button><button id="importAction">Load execution</button></div></div></details>
+  </main>
+</div>
+
 <div id="modalback" class="modalback"><div class="modal"><button class="close small" id="closeModal">✕ Close</button><h2 id="modalTitle">Scenario library</h2><div id="modalContent"></div></div></div>
 <input type="file" id="importFile" style="display:none" accept="application/json,.json">
 <script>
@@ -20,37 +82,36 @@
 const MODES={
  paxos:{name:'Paxos · acceptor recovery',group:'Consensus',icon:'⬡',desc:'Single-decree Paxos. Competing proposers, persisted promises and accepted values, reordering, crash/recovery, and majority selection.',help:'<b>Key scenario:</b> Seed an acceptor with acceptedBallot=5 and value=A, crash it, then start a new proposer with a higher ballot. A new leader must adopt the highest-ballot value from its majority of promises. <b>Guarantee:</b> safety with unique ballots and durable acceptor state; progress requires a stable leader and reachable majority.',src:'Week 7 — Paxos',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week7.pdf'},
  benor:{name:'Ben-Or · randomized consensus',group:'Consensus',icon:'🎲',desc:'Two-phase asynchronous binary consensus with n−f first-arrival thresholds and controllable coin tosses.',help:'<b>Schedule first arrivals carefully.</b> Each node uses only the first n−f distinct A and B messages of its current round. If B has no definite value, a fair random coin selects its next estimate (or override the coin for adversarial exploration). <b>Guarantee:</b> agreement for f &lt; n/2 with eventual delivery; termination with probability 1 under fair independent coins.',src:'Week 12 — randomized consensus',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week12%20(MW).pdf'},
- sync:{name:'Crash consensus · f+1 rounds',group:'Consensus',icon:'≋',desc:'Synchronous min-value flooding: crash nodes during a round after transmitting to only a chosen subset.',help:'<b>Dangerous chains:</b> in each round a process relays newly learned values. A crash in the middle of a round may send to only some peers. With at most f crashes and reliable synchronized rounds, survivors decide min(known values) after f+1 rounds. Network omission without crash violates the model.',src:'Week 6 — synchronous consensus',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week6.pdf'},
- trb:{name:'Terminating reliable broadcast',group:'Broadcast',icon:'◎',desc:'Synchronous crash-fault broadcast with a distinguished source and failure symbol SF after f+1 rounds.',help:'<b>Source may crash after a partial send.</b> Processes relay the first non-SF source value they learn; after f+1 rounds each surviving node delivers the value or SF. A correct sender always reaches correct nodes. Under f crash faults all correct survivors agree.',src:'Week 6 — TRB',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week6.pdf'},
+ sync:{name:'Crash consensus · f+1 rounds',group:'Consensus',icon:'≋',desc:'Synchronous min-value flooding: crash nodes during a round after transmitting to only a chosen subset.',help:'<b>Dangerous chains:</b> in each round a process relays newly learned values. A crash in the middle of a round may send to only some peers. With at most f crashes and reliable synchronized rounds, survivors decide min(known values) after f+1 rounds. Network omission without crash violates the model.',src:'Week 6 — synchronous consensus',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week6.pdf#page=30'},
+ trb:{name:'Terminating reliable broadcast',group:'Broadcast',icon:'◎',desc:'Synchronous crash-fault broadcast with a distinguished source and failure symbol SF after f+1 rounds.',help:'<b>Source may crash after a partial send.</b> A receiver delivers the source value as soon as it arrives and relays it in the next round if one remains. In basic TRB, a process still waiting in the final round delivers SF. A correct sender always reaches correct nodes. Under f crash faults all correct survivors agree.',src:'Week 6 — TRB',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week6.pdf#page=47'},
  brb:{name:'Bracha · Byzantine reliable broadcast',group:'Broadcast',icon:'✳',desc:'Asynchronous Byzantine broadcast with INIT / ECHO / READY, equivocation, and f < n/3 authenticated-sender fault tolerance.',help:'<b>Failure types:</b> a Byzantine sender may send conflicting INIT values, and any Byzantine process may forge different ECHO/READY contents to different recipients (but cannot impersonate another sender). Honest nodes echo at most one value, READY after n−f ECHOs or f+1 READYs, and deliver after 2f+1 READYs. Sender-faulty runs may never terminate. <b>Guarantee:</b> honest recipients agree if n > 3f and messages between correct nodes are eventually delivered.',src:'Byzantine broadcast — supplemental Bracha algorithm',url:'https://algorithm.tamnd.com/bracha-reliable-broadcast/'},
- urb:{name:'Uniform-style echo broadcast',group:'Broadcast',icon:'◉',desc:'Crash-fault eager flooding: a node that first receives a payload rebroadcasts it and delivers. Compare with terminating broadcast.',help:'<b>Crash versus channel loss:</b> sending to a subset and then crashing is allowed; a correct recipient can forward. It provides a crash-fault echo broadcast demonstration, not a full Byzantine reliable broadcast or guaranteed delivery of SF when a source crashes.',src:'Week 6 — broadcast properties',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week6.pdf'},
+ urb:{name:'Eager echo broadcast',group:'Broadcast',icon:'◉',desc:'Crash-fault eager flooding: a node that first receives a payload rebroadcasts it and delivers. Compare with terminating broadcast.',help:'<b>Crash versus channel loss:</b> sending to a subset and then crashing is allowed; a correct recipient can forward. It provides a crash-fault echo broadcast demonstration, not a full Byzantine reliable broadcast or guaranteed delivery of SF when a source crashes.',src:'Supplemental forwarding example; schedule for context',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/schedule.html'},
  snapshot:{name:'Chandy–Lamport · snapshot',group:'Global state',icon:'◫',desc:'Record a consistent global cut across FIFO channels; observe the messages captured as in-transit channel state.',help:'<b>Important:</b> A snapshot records each process once. The first marker on an incoming channel closes that channel; while other incoming channels are still open, arriving application messages are recorded as in transit. This simulator enforces FIFO order per directed channel. Snapshot correctness assumes reliable channels and no process failures.',src:'Week 3 — snapshot protocol',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week3.pdf'},
- clocks:{name:'Lamport & vector clocks',group:'Global state',icon:'↗',desc:'Generate local events, send messages and deliver them in adversarial orders; compare scalar and vector timestamps.',help:'<b>Vector clocks:</b> local/send increment the owner component. Receive takes componentwise maximum, then increments the receiver component. If neither vector dominates, events are concurrent. A larger Lamport clock alone does not imply causality.',src:'Weeks 1–3 — ordering and clocks',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week3.pdf'},
+ clocks:{name:'Lamport & vector clocks',group:'Global state',icon:'↗',desc:'Generate local events, send messages and deliver them in adversarial orders; compare scalar and vector timestamps.',help:'<b>Vector clocks:</b> local/send increment the owner component. Receive takes componentwise maximum, then increments the receiver component. If neither vector dominates, events are concurrent. A larger Lamport clock alone does not imply causality.',src:'Week 4 — vector clocks and causality',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week4.pdf'},
  twopc:{name:'Two-phase commit · 2PC',group:'Atomic commit',icon:'②',desc:'Coordinator voting, durable logging, uncertain participants, coordinator crash, recovery, and cooperative termination.',help:'<b>Blocking case:</b> Have everyone vote YES, crash the coordinator before its logged decision, and let prepared participants ask one another. Nobody can safely choose commit versus abort. A logged YES vote survives a crash. No vote or a recorded NO permits abort.',src:'Week 10 — atomic commit',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week10.pdf'},
  threepc:{name:'Three-phase commit · 3PC',group:'Atomic commit',icon:'③',desc:'PRECOMMIT, ACK, leader change, and state collection under crash-only synchronous assumptions.',help:'<b>Try:</b> Collect YES votes → deliver PRECOMMIT to a subset → crash the coordinator → elect another node → collect states. If a committable state exists, new coordinator advances others before committing. This simplified Skeen variant assumes known crash failures, reliable communication and no partitions; 3PC is unsafe with arbitrary partitions.',src:'Weeks 10–11 — Skeen 3PC',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week11.pdf'},
- detector:{name:'Heartbeat failure detector',group:'Failures & replication',icon:'♡',desc:'Delay heartbeats, crash nodes, tune suspicion timeouts, and inspect false positives or eventual detection.',help:'<b>Distinguish suspected from crashed.</b> Timeouts are evidence, not proof. Slow delivery can create false suspicions even when nodes are healthy. Under partial synchrony and an eventually adequate timeout, failure detectors can become accurate.',src:'Week 12 — failure detectors',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week12%20(MW).pdf'},
- primary:{name:'Primary–backup replication',group:'Failures & replication',icon:'⇉',desc:'Forward writes, acknowledge backups and elect a lagging primary to see what goes wrong without fencing.',help:'<b>Study lost writes:</b> Start a write from primary P0, delay replication, crash P0, promote a lagging backup. This illustrates why primary–backup requires correct failover/fencing, committed-prefix and state-transfer rules. It is deliberately a cautionary teaching model, not a full production protocol.',src:'Weeks 4–5 — primary-backup',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week4.pdf'}
+ detector:{name:'Heartbeat failure detector',group:'Failures & replication',icon:'♡',desc:'Delay heartbeats, crash nodes, tune suspicion timeouts, and inspect false positives or eventual detection.',help:'<b>Distinguish suspected from crashed.</b> Timeouts are evidence, not proof. Slow delivery can create false suspicions even when nodes are healthy. Under partial synchrony and an eventually adequate timeout, failure detectors can become accurate.',src:'Failure detector topic on the course schedule; illustrative heartbeat model',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/schedule.html'},
+ primary:{name:'Primary–backup replication',group:'Failures & replication',icon:'⇉',desc:'Forward writes, acknowledge backups and elect a lagging primary to see what goes wrong without fencing.',help:'<b>Study lost writes:</b> Start a write from primary P0, delay replication, crash P0, promote a lagging backup. This illustrates why primary–backup requires correct failover/fencing, committed-prefix and state-transfer rules. It is deliberately a cautionary teaching model, not a full production protocol.',src:'Week 5 — primary-backup',url:'https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week5.pdf'}
 };
 const groupOrder=['Consensus','Broadcast','Atomic commit','Global state','Failures & replication'];
-let S=null,undoStack=[],selection=0,autoDraft={},editMode=false,graphFocus=false;const $=s=>document.querySelector(s);
+let restartPoint=null;
+let S=null,undoStack=[],selection=0,autoDraft={},graphFocus=false;const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const idname=i=>'P'+i,alive=i=>S.nodes[i]?.alive,validId=i=>Number.isInteger(i)&&i>=0&&i<S.n;
 function log(t,kind='normal'){S.logs.unshift({t:String(t),kind,at:S.time});if(S.logs.length>350)S.logs.length=350}
 function checkpoint(){undoStack.push(JSON.stringify(S));if(undoStack.length>80)undoStack.shift()}
-function mutate(f){checkpoint();try{f()}catch(e){log('ERROR: '+e.message,'failure');console.error(e)}S.time++;render()}
+function mutate(f){checkpoint();S.options.lastStep='';try{f()}catch(e){log('ERROR: '+e.message,'failure');console.error(e)}S.time++;render()}
 function send(from,to,type,payload={}){if(!validId(from)||!validId(to))return;S.seq++;S.queue.push({id:S.seq,from,to,type,payload:structuredClone(payload)});log(`→ ${idname(from)} → ${idname(to)}  ${type}`,'note')}
 function broadcast(from,type,payload={},recipients=null){(recipients||Array.from({length:S.n},(_,i)=>i)).forEach(to=>send(from,to,type,payload))}
 function numberOr(v,d=0){let x=Number(v);return Number.isFinite(x)?x:d}
 function baseNode(i){return {id:i,alive:true,input:i%2,value:i%2, vote:'YES',state:'INIT',decided:null,log:[],promised:-1,acceptedB:-1,acceptedV:null,sessions:{}, learned:null,local:10,recorded:false,snapshotLocal:null,channels:{},closed:{},clock:0,vector:[],recvA:{},recvB:{},round:1,phase:'idle',a:i%2,b:null,coin:'random',sent:{},byzantine:false,echoed:null,readied:null,firstInit:null,echos:{},readies:{},known:new Set(),partial:'',crashNext:false,last:{},suspects:[],logIndex:0,committed:0,pendingWrites:{},role:'backup',delivered:null,heard:false}}
 function init(mode='paxos',n=5,f=2){n=Math.max(2,Math.min(10,Math.trunc(numberOr(n,5))));f=Math.max(0,Math.min(n-1,Math.trunc(numberOr(f,2))));let m=MODES[mode]?mode:'paxos';S={mode:m,n,f,nodes:Array.from({length:n},(_,i)=>baseNode(i)),queue:[],logs:[],seq:0,time:0,started:false,round:0,chosen:[],initialTotal:n*10,coordinator:0,election:null,source:0,msgValue:'DATA',protocolFaults:[],heartbeatTick:0,heartbeatTimeout:2,network:{},voteRecord:{},crashed:0,history:[],options:{}};
- S.nodes.forEach(p=>{p.vector=Array(n).fill(0);p.known=[p.input];p.last={};p.sent={};p.partial='';p.role=p.id===0?'primary':'backup';p.committed=0;for(let j=0;j<n;j++){if(j!==p.id){p.closed[j]=false;p.channels[j]=[]}p.last[j]=0}});if(mode==='trb')S.nodes.forEach(p=>p.known=[]);if(mode==='urb')S.nodes.forEach(p=>p.known=[]);if(mode==='benor')S.nodes.forEach(p=>p.phase='idle');if(mode==='detector')S.nodes.forEach(p=>p.suspects=[]);if(mode==='primary')S.nodes.forEach(p=>p.state='READY');undoStack=[];selection=0;autoDraft={};log(`New ${MODES[m].name} · n=${n}, f=${f}`,'note');render()}
-function extraState(){return ['brb','paxos','benor','snapshot','clocks','twopc','threepc','detector','primary','urb'].includes(S.mode)}
+ currentExample=-1;restartPoint=null;
+ S.nodes.forEach(p=>{if(m==='sync')p.input=([3,1,4,2][p.id]??p.id+1);p.vector=Array(n).fill(0);p.known=[p.input];p.last={};p.sent={};p.partial='';p.role=p.id===0?'primary':'backup';p.committed=0;for(let j=0;j<n;j++){if(j!==p.id){p.closed[j]=false;p.channels[j]=[]}p.last[j]=0}});if(mode==='trb')S.nodes.forEach(p=>p.known=[]);if(mode==='urb')S.nodes.forEach(p=>p.known=[]);if(mode==='benor')S.nodes.forEach(p=>p.phase='idle');if(mode==='detector')S.nodes.forEach(p=>p.suspects=[]);if(mode==='primary')S.nodes.forEach(p=>p.state='READY');undoStack=[];selection=0;autoDraft={};log(`New ${MODES[m].name} · n=${n}, f=${f}`,'note');render()}
 function canDeliver(m){if(!alive(m.to)||S.network[m.from+'-'+m.to])return false;if(S.mode==='snapshot'){let prior=S.queue.some(q=>q.id<m.id&&q.from===m.from&&q.to===m.to);if(prior)return false;}return true}
 function deliver(id){let idx=S.queue.findIndex(x=>x.id===id);if(idx<0)return;let msg=S.queue[idx];if(!canDeliver(msg)){log(`Cannot deliver #${id}: receiver down, link blocked or FIFO predecessor outstanding`,'alert');return}S.queue.splice(idx,1);log(`✓ #${id} ${idname(msg.from)} → ${idname(msg.to)} ${msg.type}`);handleMessage(msg);}
-function doDeliver(id){mutate(()=>deliver(id))}
-function deliverNext(){const m=S.queue.find(canDeliver);if(m)mutate(()=>deliver(m.id));else{mutate(()=>log('No currently deliverable messages. Recover nodes, unblock links, or drop blocked messages.','alert'))}}
-function randomDeliver(count=20){mutate(()=>{let delivered=0;for(let i=0;i<count;i++){let choices=S.queue.filter(canDeliver);if(!choices.length)break;let m=choices[Math.floor(seededRandom()*choices.length)];deliver(m.id);delivered++}log(`Random schedule advanced ${delivered} deliveries.`,'note')})}
-function batchDeliver(count=20){mutate(()=>{let i=0;while(i<count){let m=S.queue.find(canDeliver);if(!m)break;deliver(m.id);i++}log(`Batch delivered ${i} message(s).`,'note')})}
+function doDeliver(id){restartPoint??=captureRun();mutate(()=>deliver(id))}
+
 function dropMessage(id){mutate(()=>{let p=S.queue.findIndex(x=>x.id===id);if(p>=0){let m=S.queue.splice(p,1)[0];log(`✕ Dropped #${id}: ${m.type} ${idname(m.from)}→${idname(m.to)}`,'alert');if(['sync','trb','snapshot','paxos','benor','twopc','threepc'].includes(S.mode))S.protocolFaults.push('Manually dropped network messages (stronger than assumed model).')}})}
 function duplicateMessage(id){mutate(()=>{let m=S.queue.find(x=>x.id===id);if(m){send(m.from,m.to,m.type,m.payload);log(`Duplicated message #${id}`,'alert')}})}
 function moveMessage(id,dir){mutate(()=>{let a=S.queue.findIndex(x=>x.id===id),b=a+dir;if(a>=0&&b>=0&&b<S.queue.length){[S.queue[a],S.queue[b]]=[S.queue[b],S.queue[a]];log(`Reordered #${id}`,'note')}})}
@@ -86,16 +147,85 @@ function benorStart(){S.started=true;S.nodes.forEach(p=>{if(p.alive&&p.phase==='
 function benorOpenRound(p){if(!p.alive)return;p.phase='A';log(`${idname(p.id)} begins round ${p.round}, broadcasts A=${p.a}`,'note');broadcast(p.id,'A',{r:p.round,value:p.a});benorEvaluateA(p)}
 function benorEvaluateA(p){if(p.phase!=='A')return;let all=p.recvA[p.round]||{},values=Object.values(all);if(values.length<S.n-S.f)return;let uniform=values.every(x=>x===values[0]);p.b=uniform?values[0]:null;p.phase='B';log(`${idname(p.id)} uses first ${S.n-S.f} A values [${values.join(',')}]; B=${p.b===null?'⊥':p.b}`,'note');broadcast(p.id,'B',{r:p.round,value:p.b});benorEvaluateB(p)}
 function benorEvaluateB(p){if(p.phase!=='B')return;let all=p.recvB[p.round]||{},values=Object.values(all);if(values.length<S.n-S.f)return;let concrete=values.filter(x=>x!==null);if(concrete.length===values.length&&concrete.every(x=>x===concrete[0])){p.decided=concrete[0];p.a=concrete[0];log(`★ ${idname(p.id)} DECIDES ${p.decided} in round ${p.round}`,'note')}else if(concrete.length){p.a=concrete[0];log(`${idname(p.id)} retains definite B=${p.a} from round ${p.round}`,'note')}else{p.a=p.coin==='random'?(seededRandom()<.5?0:1):Number(p.coin);log(`${idname(p.id)} COIN → ${p.a} for next round`,'alert')}p.round++;p.phase='A';benorOpenRound(p)}
-function benorReceive(m){let p=S.nodes[m.to],v=m.payload;let field=m.type==='A'?'recvA':'recvB',all=p[field];if(!all[v.r])all[v.r]={};if(all[v.r][m.from]===undefined)all[v.r][m.from]=v.value;if(v.r===p.round){if(m.type==='A')benorEvaluateA(p);else benorEvaluateB(p)}}
+function benorReceive(m){let p=S.nodes[m.to],v=m.payload;let field=m.type==='A'?'recvA':'recvB',all=p[field];if(!all[v.r])all[v.r]={};if(all[v.r][m.from]===undefined && Object.keys(all[v.r]).length<S.n-S.f)all[v.r][m.from]=v.value;if(v.r===p.round){if(m.type==='A')benorEvaluateA(p);else benorEvaluateB(p)}}
 // ─── CRASH CONSENSUS / TRB: synchronous rounds with partial final sends ───
 function parseRecipients(str){if(!str||!str.trim())return [];return [...new Set(str.split(/[\s,]+/).filter(Boolean).map(x=>Number(String(x).replace(/^p/i,''))).filter(validId))]}
 function syncStart(){if(S.started)return;S.started=true;S.round=0;if(S.mode==='trb')S.nodes.forEach(p=>p.known=p.id===S.source?[S.msgValue]:[]);else S.nodes.forEach(p=>p.known=[p.input]);S.nodes.forEach(p=>{p.sent={};p.decided=null});log(`Synchronous ${S.mode==='trb'?'TRB':'consensus'} started · ${S.f+1} rounds`,'note')}
-function syncRound(){if(!S.started)syncStart();if(S.round>=S.f+1){log('Protocol completed its f+1 rounds. Reset to try another scenario.','alert');return}let outgoing=[],fail=[];
- for(let p of S.nodes){if(!p.alive)continue;let unsent=p.known.filter(v=>!p.sent[JSON.stringify(v)]);let dests=p.crashNext?parseRecipients(p.partial):S.nodes.filter(q=>q.id!==p.id).map(q=>q.id);dests=dests.filter(x=>x!==p.id);for(let dest of dests)outgoing.push({from:p.id,to:dest,values:[...unsent]});for(let v of unsent)p.sent[JSON.stringify(v)]=true;if(p.crashNext)fail.push(p.id)}
- S.round++;let deliveries=0;for(let packet of outgoing){if(!alive(packet.to))continue;if(S.network[packet.from+'-'+packet.to]){S.protocolFaults.push('Dropped synchronous-round sends due to a partition. Crash-only guarantees no longer apply.');continue}let p=S.nodes[packet.to];for(let v of packet.values)if(!p.known.includes(v)){p.known.push(v);deliveries++}}
- for(let id of fail){S.nodes[id].alive=false;S.nodes[id].crashNext=false;S.crashed++;log(`${idname(id)} crashes during round ${S.round}, having sent only to [${parseRecipients(S.nodes[id].partial).map(idname).join(', ')}]`,'failure')}
- log(`Round ${S.round}: ${outgoing.length} packets; ${deliveries} new learned values`,'note');S.history.push({round:S.round,outgoing,fail});
- if(S.round===S.f+1){for(let p of S.nodes)if(p.alive){p.decided=S.mode==='trb'?(p.known.length?p.known[0]:'SF'):(p.known.length?Math.min(...p.known.map(Number)):null);log(`★ ${idname(p.id)} ${S.mode==='trb'?'DELIVERS':'DECIDES'} ${p.decided}`,'note')}}}
+function syncRound(){
+  if (!S.started) syncStart();
+  if (roundsFinished()) return;
+  const round = S.round + 1;
+  const trb = S.mode === 'trb';
+  const early = trb && S.options.earlyStopping;
+  const outgoing = [], fail = [], learned = {};
+  const live = S.nodes.filter(p => p.alive);
+  for (const p of live) {
+    if (trb && p.halted) continue;
+    const willCrash = p.crashNext || p.crashRound === round;
+    const recipients = willCrash ? parseRecipients(p.partial) : live.map(q => q.id);
+    let values = p.known.filter(v => !p.sent[JSON.stringify(v)]);
+    if (trb) {
+      if (early) values = p.id === S.source && p.deliveryRound != null ? [] : p.decided === 'SF' ? ['SF'] : [...p.known];
+      else if (p.id === S.source && round === 1) values = [S.msgValue];
+      else if (p.id !== S.source && p.deliveryRound === round - 1) values = [p.decided];
+      else values = [];
+    }
+    for (const to of recipients) {
+      if (to === p.id || !alive(to) || S.network[p.id+'-'+to]) continue;
+      if (trb && !early && !values.length) continue;
+      outgoing.push({from:p.id, to, values:[...values]});
+    }
+    for (const v of values) p.sent[JSON.stringify(v)] = true;
+    if (willCrash) fail.push(p.id);
+  }
+  for (const id of fail) {
+    S.nodes[id].alive = false;
+    S.nodes[id].crashNext = false;
+    S.crashed++;
+    log(`P${id} crashed during round ${round} after a partial send.`, 'failure');
+  }
+  for (const p of live.filter(p => p.alive && !p.halted)) {
+    const packets = outgoing.filter(m => m.to === p.id);
+    const before = new Set(p.known);
+    for (const packet of packets) for (const v of packet.values) {
+      if ((!trb || v !== 'SF') && !p.known.includes(v)) p.known.push(v);
+    }
+    learned[p.id] = p.known.filter(v => !before.has(v));
+    if (!trb) {
+      if (round === S.f + 1) p.decided = Math.min(...p.known);
+    } else if (p.deliveryRound != null) {
+      p.halted = true;
+    } else {
+      const missing = new Set(p.missing || []);
+      if (early) for (const other of S.nodes) {
+        if (other.id !== p.id && !packets.some(m => m.from === other.id)) missing.add(other.id);
+      }
+      p.missing = [...missing];
+      if (p.known.length) p.decided = p.known[0];
+      else if (round === S.f + 1 || (early && (missing.size < round || packets.some(m => m.values.includes('SF'))))) p.decided = 'SF';
+      if (p.decided != null) {
+        p.deliveryRound = round;
+        p.halted = round === S.f + 1;
+      }
+    }
+    if (p.decided != null && (!trb || p.deliveryRound === round)) log(`P${p.id} ${trb?'delivers':'decides'} ${p.decided} in round ${round}.`, 'note');
+  }
+  S.round = round;
+  const changes = fail.map(id => {
+    const recipients = outgoing.filter(m => m.from === id && m.values.length).map(m => idname(m.to));
+    return idname(id)+' crashed after sending values to '+(recipients.join(', ') || 'nobody')+'.';
+  });
+  const newlyDelivered = live.filter(p => p.alive && p.deliveryRound === round);
+  if (trb && newlyDelivered.length) changes.push(newlyDelivered.map(p => 'P'+p.id+' delivered '+p.decided).join(', ')+'.');
+  if (!trb && !changes.length) changes.push(round===S.f+1 ? 'Survivors have recorded their decisions.' : 'A + marks a value learned this round.');
+  S.options.lastStep = 'Round '+round+' completed. '+changes.join(' ');
+  S.history.push({round, outgoing, fail, learned});
+  log(`Round ${round} completed with ${outgoing.length} transmissions.`, 'note');
+}
+function roundsFinished(){
+  return S.round >= S.f + 1 || (S.mode === 'trb' && S.started && S.nodes.every(p => !p.alive || p.halted));
+}
+
 // ─── BRACHA: authenticated Byzantine reliable broadcast ───
 function brbStart(source,value){if(S.started||!alive(source))return;S.started=true;S.source=source;S.msgValue=String(value);log(`P${source} starts BRB with INIT(${value}); Byzantine source can equivocate using manual sends.`,'note');broadcast(source,'INIT',{v:String(value)})}
 function brbCorrupt(from,to,type,value){let p=S.nodes[from];if(!p.byzantine||!p.alive){log('Only operational Byzantine-marked nodes can send adversarial messages.','alert');return}if(type==='INIT'&&from!==S.source){log('INIT is permitted only from the selected broadcast source.','alert');return}S.started=true;send(from,to,type,{v:String(value)});log(`Byzantine P${from} sends ${type}(${value}) to P${to}`,'alert')}
@@ -116,7 +246,7 @@ function brbCheck(p){if(p.byzantine||!p.alive)return;
 function urbStart(source,value,dests){if(!alive(source))return;S.started=true;S.source=source;S.msgValue=value;let p=S.nodes[source];p.delivered=value;p.heard=true;log(`${idname(source)} broadcasts ${value} to chosen initial recipients.`,'note');for(let to of dests)if(to!==source)send(source,to,'ECHO',{v:value})}
 function urbReceive(m){let p=S.nodes[m.to];if(p.heard)return;p.heard=true;p.delivered=m.payload.v;log(`${idname(p.id)} first delivers ${m.payload.v}; echoes to every process.`,'note');broadcast(p.id,'ECHO',{v:m.payload.v},S.nodes.filter(x=>x.id!==p.id).map(x=>x.id))}
 // ─── 2PC / 3PC durable log and timeout / recovery ───
-function commitStart(){if(S.started)return;S.started=true;S.coordinator=0;S.nodes[0].state='WAIT_VOTES';S.nodes[0].log.push('START');log('Coordinator P0 begins vote request','note');for(let i=1;i<S.n;i++)send(0,i,'VOTE_REQ',{})}
+function commitStart(){if(S.started||!alive(0))return;S.started=true;S.coordinator=0;S.nodes[0].state='WAIT_VOTES';S.nodes[0].log.push('START');log('Coordinator P0 begins vote request','note');for(let i=1;i<S.n;i++)send(0,i,'VOTE_REQ',{})}
 function commitDecision(decider,decision,why){let p=S.nodes[decider];if(p.state==='COMMITTED'||p.state==='ABORTED')return;p.state=decision==='COMMIT'?'COMMITTED':'ABORTED';p.log.push(decision);log(`★ ${idname(decider)} logs ${decision}${why?' · '+why:''}`,'note');for(let i=0;i<S.n;i++)if(i!==decider)send(decider,i,decision,{})}
 function commitReceive(m){let p=S.nodes[m.to],v=m.payload,c=S.coordinator;switch(m.type){
  case 'VOTE_REQ':if(p.id===c||p.state!=='INIT')return;if(p.vote==='NO'){p.state='ABORTED';p.log.push('ABORT');send(p.id,m.from,'VOTE',{vote:'NO'});log(`${idname(p.id)} NO vote: logs ABORT`,'note')}else{p.state='PREPARED';p.log.push('YES');send(p.id,m.from,'VOTE',{vote:'YES'});log(`${idname(p.id)} logs YES, becomes uncertain (PREPARED)`,'note')}return;
@@ -151,7 +281,7 @@ function primaryElect(id){if(!alive(id))return;let p=S.nodes[id];S.nodes.forEach
 // ─── PRESETS: prearranged adversarial executions ───
 const PRESETS={
  paxos:[
- ['Chosen A, two acceptors crash','A was chosen by P0/P1/P2 at ballot 5. Crash P0 and P1; start P3 with ballot 9 and proposed B. P3 must adopt A.',()=>{init('paxos',5,2);mutate(()=>{for(let i of [0,1,2]){Object.assign(S.nodes[i],{promised:5,acceptedB:5,acceptedV:'A'})}scanChosen();S.nodes[0].alive=false;S.nodes[1].alive=false;S.crashed=2;S.nodes[3].input='B';selection=3;log('Two acceptors with A crashed. P3 can still collect a majority from P2,P3,P4.','alert')})}],
+ ['Chosen A, two acceptors crash','A was chosen by P0/P1/P2 at ballot 5. Crash P0 and P1; start P3 with ballot 9 and proposed B. P3 must adopt A.',()=>{init('paxos',5,2);mutate(()=>{for(let i of [0,1,2]){Object.assign(S.nodes[i],{promised:5,acceptedB:5,acceptedV:'A'})}scanChosen();S.nodes[0].alive=false;S.nodes[1].alive=false;S.crashed=2;S.nodes[3].input='B';selection=3;autoDraft.ballot=9;log('Two acceptors with A crashed. P3 can still collect a majority from P2,P3,P4.','alert')})}],
  ['Partially accepted, not chosen','Only P0 accepted A. Crash P0; a new leader may legitimately choose B if its majority has never accepted A.',()=>{init('paxos',5,2);mutate(()=>{Object.assign(S.nodes[0],{promised:5,acceptedB:5,acceptedV:'A',alive:false});S.nodes[3].input='B';selection=3;log('A not chosen. A majority with no accepted proposal may choose B.','note')})}],
  ['Dueling proposers','P0 proposes A with ballot 1 and P1 proposes B with ballot 2. Reorder prepares and promises to force preemption.',()=>{init('paxos',5,2);mutate(()=>{paxosStart(0,1,'A');paxosStart(1,2,'B');selection=1})}]],
  snapshot:[
@@ -162,11 +292,12 @@ const PRESETS={
  ['Unanimous input 1','All five processes propose 1. With sufficient delivered messages everyone should decide 1 in round one.',()=>{init('benor',5,2);mutate(()=>{S.nodes.forEach(p=>{p.input=1;p.a=1});benorStart()})}],
  ['One crash with split inputs','Crash P0 before starting; four survivors proceed with n−f messages. Delay coin outcomes to explore liveness.',()=>{init('benor',5,1);mutate(()=>{S.nodes[0].alive=false;benorStart();selection=1})}]],
  sync:[
- ['Dangerous chain across rounds','P0 has value 0, other nodes value 1. P0 crashes in round 1 after sending only to P1. P1 is set to crash in round 2 after sending to P2.',()=>{init('sync',4,2);mutate(()=>{S.nodes.forEach((p,i)=>p.input=i===0?0:1);S.nodes[0].crashNext=true;S.nodes[0].partial='1';syncStart();syncRound();S.nodes[1].crashNext=true;S.nodes[1].partial='2';log('Advance round 2, then 3. P2 will carry P0’s value to P3.','alert')})}],
- ['No failures','Five inputs 0/1, f=2, with fully reliable synchronous delivery.',()=>{init('sync',5,2);mutate(()=>syncStart())}]],
+ ['Dangerous chain across rounds','P0 has value 0, other nodes value 1. P0 crashes in round 1 after sending only to P1. P1 is set to crash in round 2 after sending to P2.',()=>{init('sync',4,2);mutate(()=>{S.nodes.forEach((p,i)=>p.input=i===0?0:1);S.nodes[0].crashNext=true;S.nodes[0].partial='1';S.nodes[1].crashRound=2;S.nodes[1].partial='2';S.nodes.forEach(p=>p.known=[p.input]);})}],
+ ['No failures','Five processes with distinct inputs exchange values for three rounds with no crashes.',()=>{init('sync',5,2);mutate(()=>syncStart())}]],
  trb:[
- ['Sender crashes mid-broadcast','P0 carries HELLO, sends only to P1 then crashes in round 1. P1 forwards in round 2; the survivors should deliver HELLO.',()=>{init('trb',4,1);mutate(()=>{S.msgValue='HELLO';S.nodes[0].crashNext=true;S.nodes[0].partial='1';syncStart();syncRound()})}],
- ['Sender dies without sending','P0 crashes during round 1 and sends to nobody. Correct nodes will deliver SF at round f+1.',()=>{init('trb',4,1);mutate(()=>{S.nodes[0].crashNext=true;S.nodes[0].partial='';syncStart();syncRound()})}]],
+ ['Sender crashes mid-broadcast','P0 carries HELLO, sends only to P1 then crashes in round 1. P1 forwards in round 2; the survivors should deliver HELLO.',()=>{init('trb',4,1);mutate(()=>{S.msgValue='HELLO';S.nodes[0].crashNext=true;S.nodes[0].partial='1';})}],
+ ['Sender dies without sending','P0 crashes during round 1 and sends to nobody. Correct nodes will deliver SF at round f+1.',()=>{init('trb',4,1);mutate(()=>{S.nodes[0].crashNext=true;S.nodes[0].partial='';})}],
+['Early stopping after a silent sender','P0 crashes before sending. In round 2 each survivor has missed only P0, so it can rule out a hidden chain and deliver SF before the round-3 bound.',()=>{init('trb',4,2);mutate(()=>{S.options.earlyStopping=true;S.nodes[0].crashNext=true;})}]],
  brb:[
  ['Honest source, one silent Byzantine peer','P0 honestly broadcasts A. P3 is Byzantine and refuses to send anything; n=4,f=1 means the three honest nodes are enough to ECHO, READY, and deliver A.',()=>{init('brb',4,1);mutate(()=>{S.nodes[3].byzantine=true;brbStart(0,'A');selection=3})}],
  ['Byzantine source equivocates','Byzantine P0 sends INIT(A) to P1/P3, INIT(B) to P2, then ECHO(A) to the honest peers. Honest nodes must still agree if anyone delivers.',()=>{init('brb',4,1);mutate(()=>{S.nodes[0].byzantine=true;S.started=true;S.source=0;S.msgValue='A';brbCorrupt(0,1,'INIT','A');brbCorrupt(0,2,'INIT','B');brbCorrupt(0,3,'INIT','A');for(let i=1;i<4;i++)brbCorrupt(0,i,'ECHO','A');selection=0})}],
@@ -188,7 +319,6 @@ const PRESETS={
  primary:[
  ['Promote a lagging backup','Primary P0 starts write 99; P1 receives replication, P2 does not. Crash P0 and promote P2 to show stale leadership.',()=>{init('primary',3,1);mutate(()=>{S.nodes.forEach(p=>{p.value='0';p.logIndex=0;p.committed=0});primaryWrite('99');let m=S.queue.find(m=>m.type==='REPLICATE'&&m.to===1);deliver(m.id);S.nodes[0].alive=false;selection=2;log('P2 is stale. Promote it to see the risk of unfenced failover.','alert')})}]]
 };
-function loadPreset(idx){let pre=(PRESETS[S.mode]||[])[idx];if(!pre)return;pre[2]();closeModal();}
 // ─── UI formatting ───
 function short(s,len=38){let t=String(s??'—');return t.length>len?t.slice(0,len-1)+'…':t}
 function nodeRows(p){let a=[];switch(S.mode){
@@ -203,7 +333,7 @@ function nodeRows(p){let a=[];switch(S.mode){
  case 'detector':a=[['logical tick',S.heartbeatTick],['suspects',p.suspects.map(idname).join(', ')||'none'],['heartbeat ages',Object.keys(p.last).filter(x=>Number(x)!==p.id).map(i=>i+':'+(S.heartbeatTick-p.last[i])).join(' ')]];break;
  case 'primary':a=[['role',p.role],['value',p.value],['log index',p.logIndex],['committed',p.committed],['phase',p.state]];break;
  }return a}
-function renderNav(){let h='';for(let grp of groupOrder){h+=`<div class="navgroup">${esc(grp)}</div>`;for(let [key,m] of Object.entries(MODES).filter(([k,x])=>x.group===grp)){h+=`<button class="nav ${S.mode===key?'active':''}" data-mode="${key}"><span class="ico">${m.icon}</span><span class="txt">${esc(m.name.split(' · ')[0])}</span><span class="mini">${S.mode===key?'●':''}</span></button>`}}$('#nav').innerHTML=h}
+
 function metric(value,label){return `<div class="metric"><b>${esc(value)}</b><span>${esc(label)}</span></div>`}
 function computeChecks(){let checks=[];const add=(state,title,desc)=>checks.push({state,title,desc});let faulted=S.nodes.filter(p=>!p.alive).length;let badlinks=Object.values(S.network).filter(Boolean).length;let forced=S.protocolFaults.length;
  add(faulted<=S.f?'ok':'bad',`${faulted} / ${S.f} nodes currently crashed`,faulted<=S.f?'Within configured instantaneous fault bound.':'Exceeds the configured bound. Guarantees may not apply.');
@@ -223,14 +353,14 @@ function computeChecks(){let checks=[];const add=(state,title,desc)=>checks.push
  return checks}
 function renderChecks(){let items=computeChecks();$('#checks').innerHTML=items.map(x=>`<div class="check"><div class="symbol ${x.state==='bad'?'bad':x.state==='warn'?'warn':x.state==='ok'?'ok':'info'}">${x.state==='bad'?'✕':x.state==='warn'?'⚠':x.state==='ok'?'✓':'○'}</div><div><strong>${esc(x.title)}</strong><div class="desc">${esc(x.desc)}</div></div></div>`).join('')}
 function renderMetrics(){let count=S.nodes.filter(p=>p.alive).length,h=metric(`${count}/${S.n}`,'Operational processes')+metric(S.queue.length,'Queued messages');if(S.mode==='paxos')h+=metric(quorum(),'Majority quorum')+metric(S.chosen.length?S.chosen.map(x=>x.v).join(', '):'—','Chosen value');else if(S.mode==='sync'||S.mode==='trb')h+=metric(`${S.round}/${S.f+1}`,'Synchronous rounds')+metric(S.nodes.filter(p=>p.decided!==null).length,'Finished');else if(S.mode==='snapshot')h+=metric(`${S.nodes.filter(p=>p.recorded).length}/${S.n}`,'Snapshots recorded')+metric(S.nodes.reduce((s,p)=>s+Object.values(p.channels).flat().length,0),'In-transit messages');else if(S.mode==='benor')h+=metric(S.n-S.f,'Messages needed / phase')+metric(S.nodes.filter(p=>p.decided!==null).length,'Decided');else if(S.mode==='detector')h+=metric(S.heartbeatTick,'Logical time');else if(S.mode==='brb')h+=metric(`${2*S.f+1}`,'READY delivery threshold')+metric(S.nodes.filter(p=>!p.byzantine&&p.delivered!==null).length,'Honest deliveries');else if(S.mode==='twopc'||S.mode==='threepc')h+=metric(idname(S.coordinator),'Coordinator')+metric(S.nodes.filter(p=>['COMMITTED','ABORTED'].includes(p.state)).length,'Final decisions');else if(S.mode==='primary')h+=metric(idname(S.coordinator),'Primary');else if(S.mode==='clocks')h+=metric(S.history.length,'Events');else h+=metric(S.nodes.filter(p=>p.delivered!==null).length,'Deliveries');$('#metrics').innerHTML=h;
- let issues=computeChecks().filter(x=>x.state==='bad');let status='';if(issues.length)status=`<div class="banner bad">${esc(issues.map(x=>x.title).join(' · '))} — explore the assumption check on the right.</div>`;else if(S.mode==='paxos'&&new Set(S.chosen.map(x=>x.v)).size===1)status=`<div class="banner good">A majority has chosen value <b>${esc(S.chosen[0].v)}</b>. A later proposer must preserve this choice while following Paxos rules.</div>`;else if(['sync','trb'].includes(S.mode)&&S.round===S.f+1)status=`<div class="banner good">All ${S.f+1} synchronous rounds completed. Inspect the per-node output and event history.</div>`;else if(S.mode==='snapshot'&&snapshotDone())status=`<div class="banner good">Snapshot complete: all markers delivered; channel states recorded. Inspect the conservation check.</div>`;else if(S.mode==='twopc'&&S.nodes.some(p=>p.state==='PREPARED')&&!alive(S.coordinator))status=`<div class="banner warn">The coordinator is down while participants are prepared. They cannot safely decide without learning a logged decision.</div>`;else if(S.mode==='threepc'&&!alive(S.coordinator))status=`<div class="banner warn">Coordinator down. Elect a surviving node to collect participants' states before recovering.</div>`;$('#status').innerHTML=status;}
-function renderNodes(){let h='';for(let p of S.nodes){h+=`<div class="node ${selection===p.id?'selected':''} ${p.alive?'':'dead'}" data-select="${p.id}" role="button" tabindex="0"><div class="label"><b><span class="dot"></span>${idname(p.id)}</b><span class="pill">${p.alive?(p.byzantine?'BYZANTINE':'RUNNING'):'CRASHED'}</span></div>`;for(let [key,val] of nodeRows(p)){h+=`<div class="kv"><span>${esc(key)}</span><span title="${esc(val)}">${esc(short(val,46))}</span></div>`}h+=`<span class="stamp">${esc(S.mode==='paxos'?'acceptor + proposer':S.mode==='threepc'||S.mode==='twopc'?(p.id===S.coordinator?'coordinator':'participant'):'process')}</span></div>`}$('#nodes').innerHTML=h}
+ let issues=computeChecks().filter(x=>x.state==='bad');let status='';if(issues.length)status=`<div class="banner bad">${esc(issues.map(x=>x.title).join(' · '))} — see property checks below.</div>`;else if(S.mode==='paxos'&&new Set(S.chosen.map(x=>x.v)).size===1)status=`<div class="banner good">A majority has chosen value <b>${esc(S.chosen[0].v)}</b>. A later proposer must preserve this choice while following Paxos rules.</div>`;else if(['sync','trb'].includes(S.mode)&&S.round===S.f+1)status=`<div class="banner good">All ${S.f+1} synchronous rounds completed. Inspect the per-node output and event history.</div>`;else if(S.mode==='snapshot'&&snapshotDone())status=`<div class="banner good">Snapshot complete: all markers delivered; channel states recorded. Inspect the conservation check.</div>`;else if(S.mode==='twopc'&&S.nodes.some(p=>p.state==='PREPARED')&&!alive(S.coordinator))status=`<div class="banner warn">The coordinator is down while participants are prepared. They cannot safely decide without learning a logged decision.</div>`;else if(S.mode==='threepc'&&!alive(S.coordinator))status=`<div class="banner warn">Coordinator down. Elect a surviving node to collect participants' states before recovering.</div>`;$('#status').innerHTML=status;}
+
 function renderGraph(){
  let radius=S.n<=5?137:156,cx=395,cy=185,rx=S.n<=5?275:305;
  const coords=S.nodes.map((p,i)=>{let a=(-Math.PI/2)+(2*Math.PI*i/S.n);return {x:cx+rx*Math.cos(a),y:cy+radius*Math.sin(a)}});
  const data=['sync','trb'].includes(S.mode)?(S.history.at(-1)?.outgoing||[]).map(x=>({...x,type:'ROUND'})):S.queue;
  let grouped=new Map();for(let m of data){if(graphFocus&&m.from!==selection&&m.to!==selection)continue;let k=m.from+'-'+m.to;let x=grouped.get(k)||{from:m.from,to:m.to,n:0};x.n++;grouped.set(k,x)}
- let h='<svg class="graph-svg" viewBox="0 0 790 370" role="img" aria-label="Network graph showing directed in-flight messages and crashed nodes"><defs><marker id="arrowblue" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#5799e8"/></marker><marker id="arrowred" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#bd6a80"/></marker></defs>';
+ let h='<svg class="graph-svg" viewBox="0 0 790 370" role="group" aria-label="Network graph showing directed in-flight messages and crashed nodes"><defs><marker id="arrowblue" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#5799e8"/></marker><marker id="arrowred" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#bd6a80"/></marker></defs>';
  for(let m of grouped.values()){
  if(m.from===m.to)continue;let a=coords[m.from],b=coords[m.to],dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
  let x1=a.x+ux*26,y1=a.y+uy*26,x2=b.x-ux*28,y2=b.y-uy*28;
@@ -240,16 +370,16 @@ function renderGraph(){
  if(grouped.size<=22)h+=`<text class="graph-count" x="${mx.toFixed(1)}" y="${(my-3).toFixed(1)}" text-anchor="middle">${m.n}</text>`;
  }
  for(let p of S.nodes){let a=coords[p.id];h+=`<g class="graph-node ${p.alive?'':'crashed'} ${selection===p.id?'selected':''}" data-select="${p.id}" tabindex="0" role="button"><circle cx="${a.x.toFixed(1)}" cy="${a.y.toFixed(1)}" r="24"/><text x="${a.x.toFixed(1)}" y="${(a.y+5).toFixed(1)}" text-anchor="middle">P${p.id}</text><title>P${p.id}: ${p.alive?'alive':'crashed'}. Click to inspect.</title></g>`}
- h+='</svg>';if(!grouped.size)h+='<div class="muted" style="font-size:12px;text-align:center;margin-top:-4px">No in-flight transmissions for this view. Click a process to edit it.</div>';else h+='<div class="muted" style="font-size:11px;text-align:center;margin-top:-3px">Arrows: queued directed messages (number = count) · dashed pink = unavailable path · click a node to edit</div>';
+ h+='</svg>';if(!isAsync())h+='<div class="muted" style="font-size:12px;text-align:center">'+(S.round?'Arrows show transmissions in round '+S.round+'.':'Run round 1 to see which processes sent messages.')+'</div>';else if(!grouped.size)h+='<div class="muted" style="font-size:12px;text-align:center;margin-top:-4px">No in-flight transmissions for this view. Click a process to edit it.</div>';else h+='<div class="muted" style="font-size:11px;text-align:center;margin-top:-3px">Arrows: queued directed messages (number = count) · dashed pink = unavailable path · click a node to edit</div>';
  $('#graph').innerHTML=h;let check=$('#focusEdges');check.checked=graphFocus;
 }
-function renderQueue(){if(!S.queue.length){$('#queue').innerHTML='<div class="empty">Nothing in flight. Start the protocol or create an event. You control the next delivery.</div>';return}let h='';S.queue.slice(0,120).forEach((m,i)=>{let blocked=!canDeliver(m),why=!alive(m.to)?'receiver crashed':S.network[m.from+'-'+m.to]?'link blocked':S.mode==='snapshot'?'FIFO predecessor':'not deliverable';h+=`<div class="msg"><div class="msg-top"><span class="type">#${m.id} ${esc(m.type)}</span><span class="path">P${m.from} → P${m.to}</span></div><div class="detail">${esc(JSON.stringify(m.payload))}</div><div class="actions"><button class="small ${blocked?'':'primary'}" data-queue="deliver" data-qid="${m.id}" ${blocked?'disabled':''}>${blocked?esc(why):'Deliver'}</button><button class="small" data-queue="drop" data-qid="${m.id}">Drop</button><button class="small" data-queue="dup" data-qid="${m.id}">Duplicate</button><button class="small" data-queue="edit" data-qid="${m.id}">Edit</button><button class="small" data-queue="up" data-qid="${m.id}" ${i===0?'disabled':''}>↑</button><button class="small" data-queue="down" data-qid="${m.id}" ${i===S.queue.length-1?'disabled':''}>↓</button></div></div>`});if(S.queue.length>120)h+=`<div class="empty">Only first 120 of ${S.queue.length} messages shown; use Deliver 20 to advance.</div>`;$('#queue').innerHTML=h}
+function renderQueue(){if(!S.queue.length){$('#queue').innerHTML='<div class="empty">Nothing in flight. Start the protocol or create an event. You control the next delivery.</div>';return}let h='';S.queue.slice(0,120).forEach((m,i)=>{let blocked=!canDeliver(m),why=!alive(m.to)?'receiver crashed':S.network[m.from+'-'+m.to]?'link blocked':S.mode==='snapshot'?'FIFO predecessor':'not deliverable';h+=`<div class="msg"><div class="msg-top"><span class="type">#${m.id} ${esc(m.type)}</span><span class="path">P${m.from} → P${m.to}</span></div><div class="detail">${esc(JSON.stringify(m.payload))}</div><div class="actions"><button class="small ${blocked?'':'primary'}" data-queue="deliver" data-qid="${m.id}" ${blocked?'disabled':''}>${blocked?esc(why):'Deliver'}</button><button class="small" data-queue="drop" data-qid="${m.id}">Drop</button><button class="small" data-queue="dup" data-qid="${m.id}">Duplicate</button><button class="small" data-queue="edit" data-qid="${m.id}">Edit</button><button class="small" data-queue="up" data-qid="${m.id}" ${i===0?'disabled':''}>↑</button><button class="small" data-queue="down" data-qid="${m.id}" ${i===S.queue.length-1?'disabled':''}>↓</button></div></div>`});if(S.queue.length>120)h+=`<div class="empty">Showing the first 120 of ${S.queue.length} messages. Run a guided step to advance.</div>`;$('#queue').innerHTML=h}
 function inp(label,field,val,type='text',help=''){return `<label class="field">${esc(label)}<input data-pfield="${field}" type="${type}" value="${esc(val??'')}" ${type==='number'?'step="1"':''}></label>${help?`<span class="muted" style="font-size:11px">${esc(help)}</span>`:''}`}
 function sel(label,field,val,items){return `<label class="field">${esc(label)}<select data-pfield="${field}">${items.map(x=>`<option value="${esc(x)}" ${String(x)===String(val)?'selected':''}>${esc(x)}</option>`).join('')}</select></label>`}
 function renderInspector(){let p=S.nodes[selection],h=`<div class="inspector"><div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:16px">${idname(p.id)} ${p.alive?'<span class="ok">● alive</span>':'<span class="bad">● crashed</span>'}</strong><button class="small ${p.alive?'danger':''}" data-act="crash">${p.alive?'Crash':'Recover'}</button></div>`;
  if(S.mode==='paxos'){h+=inp('Promised ballot (persisted)','promised',p.promised,'number')+inp('Accepted ballot (persisted; -1 = none)','acceptedB',p.acceptedB,'number')+inp('Accepted value (persisted; empty = none)','acceptedV',p.acceptedV??'')+inp('Proposed input','input',p.input);h+=`<div class="hint tight">You can edit an acceptor <b>even while crashed</b>. Recovery retains these fields. Seeding unreachable combinations may violate invariants.</div>`}
  else if(S.mode==='benor'){h+=sel('Binary input','input',p.input,[0,1])+sel('Coin override','coin',p.coin,['random',0,1])+inp('Current A estimate (seed / modify)','a',p.a,'number');h+=`<div class="inset"><strong>Arrivals in round ${p.round}</strong><div class="muted mono" style="font-size:11px;margin-top:5px">A: ${esc(JSON.stringify(p.recvA[p.round]||{}))}<br>B: ${esc(JSON.stringify(p.recvB[p.round]||{}))}</div></div>`}
- else if(S.mode==='sync'||S.mode==='trb'){if(S.mode==='sync')h+=inp('Initial numeric input','input',p.input,'number');else h+=`<div class="hint tight">${p.id===S.source?'Selected source':'Receiver / relay'}</div>`;h+=sel('Crash in next synchronous round?','crashNext',p.crashNext?'yes':'no',['no','yes'])+inp('Send ONLY to these process IDs before crashing','partial',p.partial);h+=`<div class="hint tight">E.g., <code>1,3</code> means P${p.id} sends to P1 and P3, then crashes at the end of this round. Empty means it sends to nobody.</div>`}
+ else if(S.mode==='sync'||S.mode==='trb'){if(S.mode==='sync')h+=S.started?'<p class="muted">Initial input: '+esc(p.input)+'</p>':inp('Initial numeric input','input',p.input,'number');else h+=`<div class="hint tight">${p.id===S.source?'Selected source':'Receiver / relay'}</div>`;if(p.crashRound>S.round)h+='<p>Scheduled crash in round '+p.crashRound+'. Changing the next-round setting overrides it.</p>';h+=sel('Crash in next synchronous round?','crashNext',p.crashNext?'yes':'no',['no','yes'])+inp('Send ONLY to these process IDs before crashing','partial',p.partial);h+=`<div class="hint tight">E.g., <code>1,3</code> means P${p.id} sends to P1 and P3, then crashes at the end of this round. Empty means it sends to nobody.</div>`}
  else if(S.mode==='snapshot'){h+=inp('Local token balance','local',p.local,'number');h+=`<div class="inset"><strong>Incoming channel cuts</strong>${Object.keys(p.channels).map(src=>`<div class="kv"><span>P${src} → P${p.id} ${p.closed[src]?'closed':'open'}</span><span>${esc(JSON.stringify(p.channels[src]))}</span></div>`).join('')}</div>`}
  else if(S.mode==='clocks'){h+=inp('Scalar Lamport clock','clock',p.clock,'number')+inp('Vector clock (comma-separated)','vector',p.vector.join(','));}
  else if(S.mode==='twopc'||S.mode==='threepc'){h+=sel('Vote on prepare','vote',p.vote,['YES','NO'])+sel('Persisted transaction state','state',p.state,['INIT','WAIT_VOTES','PREPARED','PRECOMMIT','WAIT_ACK','COMMITTED','ABORTED'])+`<div class="inset"><strong>Durable log</strong><div class="muted mono" style="font-size:11px;margin-top:5px;word-break:break-word">${esc(p.log.join(' → ')||'empty')}</div></div>`;}
@@ -263,7 +393,7 @@ function selectOptions(id,choices,value,label='Destination process'){return `<la
 function scenarioHtml(){let p=S.nodes[selection],m=S.mode,h='<div class="inspector">';
  if(m==='paxos'){let suggested=Math.max(1,S.n+selection, ...S.nodes.map(x=>x.promised+1));h+=formfield('New proposer ballot (unique, increasing)','ballot',autoDraft.ballot??suggested,'number')+formfield('Candidate value','candidate',autoDraft.candidate??String(p.input))+`<div class="top-actions"><button class="primary" data-act="prepare">Start PREPARE from P${selection}</button></div><div class="hint tight">If any PROMISE in the majority contains an accepted value, the proposer must use the value with the <b>highest accepted ballot</b>.</div>`}
  else if(m==='benor')h+=`<div class="top-actions"><button class="primary" data-act="start">Broadcast round-1 A values</button></div><div class="hint tight">After starting, schedule A and B arrivals, or deliver batches. Each node independently advances when it has n−f messages.</div>`;
- else if(m==='sync'||m==='trb'){if(m==='trb'){h+=selectOptions('source',Array.from({length:S.n},(_,i)=>i),S.source,'Source process')+formfield('Source broadcast value','broadcastVal',S.msgValue)}h+=`<div class="top-actions"><button class="primary" data-act="round">${S.started?'Advance next round':'Start and advance round 1'}</button></div><div class="hint tight">Configure “crash next round” on any node. It sends only to the specified subset before failing. No asynchronous queue is used for synchronous rounds.</div>`}
+ else if(m==='sync'||m==='trb'){if(m==='trb'){h+=S.started?'<p>Source P'+S.source+' · '+esc(S.msgValue)+'</p>':selectOptions('source',Array.from({length:S.n},(_,i)=>i),S.source,'Source process')+formfield('Source broadcast value','broadcastVal',S.msgValue)+'<label class="field">TRB variant<select id="trbVariant"><option value="basic">Basic TRB</option><option value="early" '+(S.options.earlyStopping?'selected':'')+'>Early stopping</option></select></label>'}h+=`<div class="top-actions"><button class="primary" data-act="round" ${roundsFinished()?'disabled':''}>${S.started?'Advance next round':'Start and advance round 1'}</button></div><div class="hint tight">Configure “crash next round” on any node. It sends only to the specified subset before failing. No asynchronous queue is used for synchronous rounds.</div>`}
  else if(m==='snapshot'){h+=selectOptions('target',S.nodes.filter(x=>x.id!==selection).map(x=>x.id),selection===0?1:0)+formfield('Transfer amount','amount',autoDraft.amount??3,'number')+`<div class="top-actions"><button class="small" data-act="transfer">Send application transfer</button><button class="primary" data-act="snapshot">Initiate snapshot at P${selection}</button></div>`}
  else if(m==='clocks'){h+=selectOptions('target',S.nodes.filter(x=>x.id!==selection).map(x=>x.id),selection===0?1:0)+`<div class="top-actions"><button class="small" data-act="local">Local event</button><button class="primary" data-act="clock-send">Send timestamped message</button></div>`}
  else if(m==='twopc'||m==='threepc'){h+=`<div class="top-actions"><button class="primary" data-act="commit-start" ${S.started?'disabled':''}>Begin transaction</button><button data-act="ask">Ask peers for decision</button><button data-act="replay">Resend logged decision</button></div>`;if(m==='threepc')h+=`<button class="primary" style="margin-top:10px" data-act="elect">Elect P${selection} as coordinator; collect state</button>`;h+=`<div class="hint tight">Change participants' votes before they receive VOTE_REQ. Prepared state and coordinator decisions are persisted across crash/recovery.</div>`}
@@ -273,27 +403,49 @@ function scenarioHtml(){let p=S.nodes[selection],m=S.mode,h='<div class="inspect
  else if(m==='primary'){h+=formfield('New value','writeValue',autoDraft.writeValue??99)+`<div class="top-actions"><button class="primary" data-act="write">Write from current primary</button><button class="small" data-act="promote">Promote P${selection} to primary</button></div>`}
  h+='</div>';
  if(isAsync()&&S.mode!=='snapshot'){let others=S.nodes.filter(x=>x.id!==selection);h+=`<div class="inset"><strong>Directed link fault</strong>${selectOptions('linkTarget',others.map(x=>x.id),others[0]?.id||0)}<button style="margin-top:9px" class="small" data-act="toggle-link">Block / unblock P${selection} → destination</button><div class="muted" style="font-size:11px;margin-top:8px">Blocked links delay deliveries until restored (or manually dropped).</div></div>`}return h}
-function renderRoundPanel(){if(S.mode==='sync'||S.mode==='trb'){let h=`<div class="panel"><div class="panel-head"><h2>Round-by-round deliveries</h2><span class="pill">${S.round} / ${S.f+1} rounds</span></div><div class="panel-body">`;if(!S.history.length)h+='<div class="empty">Run a synchronous round to inspect its deliveries and mid-round crashes.</div>';for(let r of S.history){h+=`<div class="inset"><strong>Round ${r.round}</strong><p class="muted" style="font-size:12px">${r.outgoing.map(m=>`P${m.from}→P${m.to}: [${m.values.join(',')}]`).join(' · ')||'No messages'}</p>${r.fail.length?`<p class="bad" style="font-size:12px">Crashed: ${r.fail.map(idname).join(', ')}</p>`:''}</div>`}h+='</div></div>';$('#roundPanel').innerHTML=h}
+function renderRoundPanel(){if(S.mode==='sync'||S.mode==='trb'){let h=`<div class="panel"><div class="panel-head"><h2>Round-by-round deliveries</h2><span class="pill">${S.round} / ${S.f+1} rounds</span></div><div class="panel-body">`;if(!S.history.length)h+='<div class="empty">Run a synchronous round to inspect its deliveries and mid-round crashes.</div>';for(let r of S.history){h+=`<div class="inset"><strong>Round ${r.round}</strong><p class="muted" style="font-size:12px">${r.outgoing.map(m=>`P${m.from}→P${m.to}: [${esc(m.values.join(', '))}]`).join(' · ')||'No messages'}</p>${r.fail.length?`<p class="bad" style="font-size:12px">Crashed: ${r.fail.map(idname).join(', ')}</p>`:''}</div>`}h+='</div></div>';$('#roundPanel').innerHTML=h}
  else if(S.mode==='clocks'&&S.history.length){$('#roundPanel').innerHTML=`<div class="panel"><div class="panel-head"><h2>Causal timestamp history</h2></div><div class="panel-body"><div style="max-height:200px;overflow:auto">${S.history.slice(-30).map((h,i)=>`<div class="logline"><span class="num">${i+1}</span><span>P${h.id} ${h.kind} — L=${h.lc} · V=[${h.vc.join(',')}]</span></div>`).join('')}</div></div></div>`}
  else if(S.mode==='snapshot'){let x=snapshotTotals();$('#roundPanel').innerHTML=`<div class="panel"><div class="panel-head"><h2>Recorded global cut</h2><span class="pill">${snapshotDone()?'complete':'in progress'}</span></div><div class="panel-body"><p class="muted">Recorded local token balances: <strong>${x.local}</strong> · In-transit token balances: <strong>${x.inTransit}</strong> · Sum: <strong>${x.total}</strong> (initial ${S.initialTotal})</p><div class="card-help">${S.nodes.map(p=>`<b>P${p.id}</b>: snapshot=${p.snapshotLocal??'not recorded'}; inbound channels: ${Object.entries(p.channels).map(([src,val])=>`P${src}→P${p.id} [${val.map(v=>v.amount).join(',')}]`).join('; ')}`).join('<br>')}</div></div></div>`}
  else if(S.mode==='paxos'){let sessions=S.nodes.flatMap(p=>Object.values(p.sessions).map(v=>({...v,owner:p.id})));$('#roundPanel').innerHTML=sessions.length?`<div class="panel"><div class="panel-head"><h2>Leader attempts</h2></div><div class="panel-body">${sessions.map(x=>`<div class="inset"><strong>P${x.owner} · ballot ${x.b} · ${esc(x.phase.toUpperCase())}</strong><div class="muted" style="font-size:12px">Proposed ${esc(x.proposed)} → candidate ${esc(x.chosenValue??'pending')} · Promises ${Object.keys(x.promises).length}/${quorum()} · Accepted replies ${Object.keys(x.acks).length}/${quorum()}</div></div>`).join('')}</div></div>`:''}
  else $('#roundPanel').innerHTML=''}
 function renderTrace(){$('#trace').innerHTML=S.logs.length?S.logs.slice(0,140).map((e,i)=>`<div class="logline ${e.kind}"><span class="num">${S.logs.length-i}</span><span>${esc(e.t)}</span></div>`).join(''):'<div class="empty">No events yet.</div>'}
-function render(){let m=MODES[S.mode];$('#modeTitle').textContent=m.name;$('#modeDesc').textContent=m.desc;$('#ninput').value=S.n;$('#finput').value=S.f;$('#modeHelp').innerHTML=`${m.help}<br><a class="footerlink" href="${esc(m.url)}" target="_blank" rel="noopener noreferrer">↗ Lecture source: ${esc(m.src)}</a> · <a class="footerlink" href="https://www.cs.cornell.edu/courses/cs5414/2026fa/schedule.html" target="_blank">Course schedule</a>`;$('#runAction').textContent=({paxos:'Start proposer',benor:'Start round 1',sync:'Next round',trb:'Next round',snapshot:'Take snapshot',clocks:'Local event',twopc:'Begin 2PC',threepc:'Begin 3PC',brb:'Begin Bracha',urb:'Broadcast',detector:'Next tick',primary:'Write'})[S.mode];$('#stepAction').textContent=['sync','trb'].includes(S.mode)?'Next round':'Deliver next';$('#stepAction').disabled=['sync','trb'].includes(S.mode)?S.round>=S.f+1:false;$('#batchAction').disabled=['sync','trb'].includes(S.mode);$('#randomAction').disabled=['sync','trb'].includes(S.mode);$('#queueDesc').textContent=['sync','trb'].includes(S.mode)?'In this synchronous model, delivery happens for all recipients at the round boundary. Configure each node’s partial send and crash status, then advance a round.':'Deliver, drop, duplicate, corrupt, or reorder individual messages. In-flight messages survive sender crashes.';$('#undoAction').disabled=!undoStack.length;renderNav();renderMetrics();renderGraph();renderNodes();renderQueue();renderInspector();renderRoundPanel();renderTrace();renderChecks();$('#scenario').innerHTML=scenarioHtml()}
+function render(){
+  const mode = MODES[S.mode];
+  $('#modeTitle').textContent=names[S.mode];
+  $('#modeDesc').textContent=goals[S.mode];
+  $('#ninput').value=S.n;
+  $('#finput').value=S.f;
+  $('#modeHelp').innerHTML=mode.help;
+  renderGuide();
+  renderNavigation();
+  renderMetrics();
+  renderStateTable();
+  renderGraph();
+  renderQueue();
+  renderInspector();
+  renderRoundPanel();
+  renderTrace();
+  renderChecks();
+  $('#scenario').innerHTML=scenarioHtml();
+}
 // ─── CONTROLS, export/import, and replay ───
 function undo(){if(!undoStack.length)return;S=JSON.parse(undoStack.pop());selection=Math.min(selection,S.n-1);render()}
 function exportState(){const blob=new Blob([JSON.stringify({schema:'failurelab-v1',state:S},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`failure-lab-${S.mode}-${new Date().toISOString().slice(0,10)}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function importState(data){if(!data||data.schema!=='failurelab-v1'||!data.state||!MODES[data.state.mode])throw Error('Not a Failure Lab export');let next=data.state;if(!Number.isInteger(next.n)||next.n<2||next.n>10||!Array.isArray(next.nodes)||next.nodes.length!==next.n||!Array.isArray(next.queue))throw Error('Invalid node or queue data');S=next;undoStack=[];selection=0;render()}
+function importState(data){if(!data||data.schema!=='failurelab-v1'||!data.state||!MODES[data.state.mode])throw Error('Not a Failure Lab export');let next=data.state;if(!Number.isInteger(next.n)||next.n<2||next.n>10||!Array.isArray(next.nodes)||next.nodes.length!==next.n||!Array.isArray(next.queue))throw Error('Invalid node or queue data');S=next;S.options??={};undoStack=[];selection=0;autoDraft={};restartPoint=null;currentExample=S.options.example??-1;
+ if(S.mode==='trb' && S.started && S.round>0) for(const p of S.nodes){
+   if(p.deliveryRound===undefined && p.known.length && p.alive){p.decided=p.known[0];p.deliveryRound=S.round;}
+ }render()}
 function showModal(title,contents){$('#modalTitle').textContent=title;$('#modalContent').innerHTML=contents;$('#modalback').classList.add('show')}
 function closeModal(){$('#modalback').classList.remove('show')}
-function showPresets(){let list=PRESETS[S.mode]||[];showModal('Adversarial scenarios · '+MODES[S.mode].name,`<p>Load a concrete failure setup, then control the next step yourself. Each preset replaces the current state; export your run first if you want to keep it.</p>${list.map((a,i)=>`<button class="pre" data-preset="${i}"><b>${esc(a[0])}</b><span class="desc">${esc(a[1])}</span></button>`).join('')||'<p>Use the state inspector and scheduler to construct a scenario.</p>'}`)}
 function showMessageEditor(id){let m=S.queue.find(x=>x.id===id);if(!m)return;showModal(`Edit / corrupt message #${id}`,`<p>This is an adversarial fault injection control. Change the message type, sender, destination, or payload. Arbitrarily modified or forged messages are <b>not</b> covered by crash-fault Paxos, Ben-Or, 2PC, or the snapshot assumptions.</p><textarea id="rawMessage" style="width:100%;height:270px;background:#0b1423;color:#e3efff;border:1px solid #405371;border-radius:10px;padding:12px;font:12px/1.5 ui-monospace,monospace">${esc(JSON.stringify({from:m.from,to:m.to,type:m.type,payload:m.payload},null,2))}</textarea><div class="top-actions"><button class="primary" data-act="message-apply" data-mid="${id}">Apply mutated message</button><button data-act="raw-cancel">Cancel</button></div><div id="rawError" class="bad" style="margin-top:8px"></div>`)}
 function showRawEditor(){let p=S.nodes[selection];showModal(`Edit complete state of P${selection}`,`<p>Raw edits can seed otherwise unreachable configurations. This is useful for counterexamples; the safety checks report current state, not a proof that your seed can occur in a valid run. Never edit id or the node array length.</p><textarea id="rawNode" style="width:100%;height:350px;background:#0b1423;color:#e3efff;border:1px solid #405371;border-radius:10px;padding:12px;font:12px/1.5 ui-monospace,monospace">${esc(JSON.stringify(p,null,2))}</textarea><div class="top-actions"><button class="primary" data-act="raw-apply">Apply node state</button><button data-act="raw-cancel">Cancel</button></div><div id="rawError" class="bad" style="margin-top:8px"></div>`)}
-function setNodeField(key,raw){let p=S.nodes[selection];if(!p)return;mutate(()=>{let v=raw;if(['promised','acceptedB','clock','local','logIndex','committed','input','a'].includes(key))v=numberOr(v,0);if(key==='crashNext'||key==='byzantine')v=v==='yes';if(key==='vector'){v=raw.split(',').map(x=>Number(x.trim()));if(v.length!==S.n||v.some(x=>!Number.isInteger(x)||x<0))throw Error(`Vector clock must be ${S.n} nonnegative integer entries`)}if(key==='acceptedV'||key==='delivered'){if(v==='')v=null}if(key==='input'&&['paxos','primary'].includes(S.mode))v=String(raw);if(key==='vote')v=raw;if(key==='state'){p.log.push('MANUAL SEED → '+v);S.protocolFaults.push('Manual transaction-state seed is not guaranteed reachable.')}if(key==='acceptedB'&&v<0)p.acceptedV=null;p[key]=v;if(S.mode==='benor'&&key==='input'&&!S.started)p.a=v;if(S.mode==='snapshot'&&key==='local'&&!S.started){S.initialTotal=S.nodes.reduce((s,x)=>s+x.local,0)+S.queue.filter(m=>m.type==='TRANSFER').reduce((s,m)=>s+m.payload.amount,0)}if(S.mode==='paxos'&&['promised','acceptedB','acceptedV'].includes(key)){scanChosen();log(`Manual acceptor seed P${selection}.${key}=${v} (persisted)`,'alert')}else log(`Edited P${selection}.${key} = ${JSON.stringify(v)}`,'note')})}
-function actionFromScenario(action){let p=S.nodes[selection];switch(action){
+function setNodeField(key,raw){let p=S.nodes[selection];if(!p)return;mutate(()=>{let v=raw;if(['promised','acceptedB','clock','local','logIndex','committed','input','a'].includes(key))v=numberOr(v,0);if(key==='crashNext'||key==='byzantine')v=v==='yes';if(key==='vector'){v=raw.split(',').map(x=>Number(x.trim()));if(v.length!==S.n||v.some(x=>!Number.isInteger(x)||x<0))throw Error(`Vector clock must be ${S.n} nonnegative integer entries`)}if(key==='acceptedV'||key==='delivered'){if(v==='')v=null}if(key==='input'&&S.mode==='sync'&&!S.started)p.known=[v];if(key==='crashNext')p.crashRound=null;if(key==='input'&&['paxos','primary'].includes(S.mode)){v=String(raw);delete autoDraft.candidate;}if(key==='vote')v=raw;if(key==='state'){p.log.push('MANUAL SEED → '+v);S.protocolFaults.push('Manual transaction-state seed is not guaranteed reachable.')}if(key==='acceptedB'&&v<0)p.acceptedV=null;p[key]=v;if(S.mode==='benor'&&key==='input'&&!S.started)p.a=v;if(S.mode==='snapshot'&&key==='local'&&!S.started){S.initialTotal=S.nodes.reduce((s,x)=>s+x.local,0)+S.queue.filter(m=>m.type==='TRANSFER').reduce((s,m)=>s+m.payload.amount,0)}if(S.mode==='paxos'&&['promised','acceptedB','acceptedV'].includes(key)){scanChosen();log(`Manual acceptor seed P${selection}.${key}=${v} (persisted)`,'alert')}else log(`Edited P${selection}.${key} = ${JSON.stringify(v)}`,'note')})}
+function actionFromScenario(action){
+ if(['prepare','start','round','snapshot','transfer','local','clock-send','commit-start','ask','replay','elect','brb-start','urb-start','tick','write','promote'].includes(action))restartPoint??=captureRun();
+ let p=S.nodes[selection];switch(action){
  case 'prepare':{let b=Number($('#ballot')?.value),v=$('#candidate')?.value;autoDraft.ballot=b;autoDraft.candidate=v;mutate(()=>paxosStart(selection,b,v));break}
  case 'start':mutate(()=>benorStart());break;
- case 'round':mutate(()=>{if(S.mode==='trb'&&!S.started){S.source=numberOr($('#source')?.value,0);S.msgValue=$('#broadcastVal')?.value||'DATA'}syncRound()});break;
+ case 'round':mutate(syncRound);break;
  case 'snapshot':mutate(()=>snapshotInitiate(selection));break;
  case 'transfer':{let target=Number($('#target').value),amount=Number($('#amount').value);autoDraft.amount=amount;mutate(()=>snapshotTransfer(selection,target,amount));break}
  case 'local':mutate(()=>clockStep(selection));break;
@@ -316,32 +468,252 @@ function actionFromScenario(action){let p=S.nodes[selection];switch(action){
  case 'message-apply':{try{let id=Number(document.querySelector('[data-act=message-apply]').dataset.mid),v=JSON.parse($('#rawMessage').value);if(!validId(v.from)||!validId(v.to)||typeof v.type!=='string'||!v.type||typeof v.payload!=='object'||v.payload===null)throw Error('Expected {from,to,type,payload} with valid process IDs and object payload');mutate(()=>{let m=S.queue.find(x=>x.id===id);if(!m)throw Error('Message no longer in queue');Object.assign(m,{from:v.from,to:v.to,type:v.type,payload:v.payload});S.protocolFaults.push('Injected altered/forged message. Crash-only proof assumptions no longer apply.');log(`Adversary edited message #${id}: ${v.type} P${v.from}→P${v.to}`,'failure')});closeModal()}catch(e){$('#rawError').textContent=e.message}break}
  case 'raw-apply':{try{let value=JSON.parse($('#rawNode').value);if(!value||Array.isArray(value)||typeof value!=='object'||value.id!==selection)throw Error('JSON object must keep the same id');if(!Array.isArray(value.vector)||value.vector.length!==S.n)throw Error('Vector must have n entries');mutate(()=>{S.nodes[selection]={...S.nodes[selection],...value};S.protocolFaults.push('Manual raw node state may not be reachable by protocol transitions.');if(S.mode==='paxos')scanChosen();log(`Raw state seeded for P${selection}`,'alert')});closeModal()}catch(e){$('#rawError').textContent=e.message}break}
  }}
-function topAction(action){if(action==='run'){
- if(S.mode==='paxos'){let b=Math.max(1,S.n+selection,...S.nodes.map(x=>x.promised+1));mutate(()=>paxosStart(selection,b,String(S.nodes[selection].input)));}
- else if(S.mode==='benor')mutate(()=>benorStart());
- else if(['sync','trb'].includes(S.mode))mutate(()=>syncRound());
- else if(S.mode==='snapshot')mutate(()=>snapshotInitiate(selection));
- else if(S.mode==='clocks')mutate(()=>clockStep(selection));
- else if(['twopc','threepc'].includes(S.mode))mutate(()=>commitStart());
- else if(S.mode==='brb')mutate(()=>brbStart(S.source,S.msgValue));
- else if(S.mode==='urb')mutate(()=>urbStart(selection,S.msgValue,S.nodes.filter(p=>p.id!==selection).map(p=>p.id)));
- else if(S.mode==='detector')mutate(()=>detectorTick());
- else if(S.mode==='primary')mutate(()=>primaryWrite('99'));
- }else if(action==='step'){if(['sync','trb'].includes(S.mode))mutate(()=>syncRound());else deliverNext()}else if(action==='batch')batchDeliver(20);else if(action==='random')randomDeliver(20);else if(action==='reset')init(S.mode,S.n,S.f);else if(action==='undo')undo();else if(action==='presets')showPresets();else if(action==='export')exportState();else if(action==='import')$('#importFile').click()}
-const primaryButtons={runAction:'run',stepAction:'step',batchAction:'batch',randomAction:'random',undoAction:'undo',resetAction:'reset',presetAction:'presets',exportAction:'export',importAction:'import'};
-for(let [btn,act] of Object.entries(primaryButtons))$('#'+btn).addEventListener('click',()=>topAction(act));
+function captureRun(){
+  return {state:structuredClone(S),selection,draft:{...autoDraft},example:currentExample};
+}
+function guidedStep(){
+  const guide=nextGuide();
+  if(!guide.run) return;
+  if(!restartPoint) restartPoint=captureRun();
+  guide.run();
+}
+$('#runAction').addEventListener('click',guidedStep);
+$('#undoAction').addEventListener('click',undo);
+$('#resetAction').addEventListener('click',()=>{
+  if(!restartPoint){if(currentExample>=0)chooseExample(currentExample);else init(S.mode,S.n,S.f);return}
+  S=structuredClone(restartPoint.state);selection=restartPoint.selection;autoDraft={...restartPoint.draft};
+  currentExample=restartPoint.example;undoStack=[];restartPoint=null;render();
+});
+$('#setupButton').addEventListener('click',()=>toggleSetup($('#setup').hidden));
+$('#closeSetup').addEventListener('click',()=>{toggleSetup(false);$('#setupButton').focus()});
+$('#processPicker').addEventListener('change',e=>selectProcess(Number(e.target.value)));
+$('#example').addEventListener('change',e=>chooseExample(Number(e.target.value)));
+$('#mobileMode').addEventListener('change',e=>beginMode(e.target.value));
+$('#exportAction').addEventListener('click',exportState);
+$('#importAction').addEventListener('click',()=>$('#importFile').click());
 $('#applyConfig').addEventListener('click',()=>init(S.mode,Number($('#ninput').value),Number($('#finput').value)));
+
 $('#clearLog').addEventListener('click',()=>mutate(()=>S.logs=[]));
 $('#closeModal').addEventListener('click',closeModal);$('#modalback').addEventListener('click',e=>{if(e.target===$('#modalback'))closeModal()});
 $('#importFile').addEventListener('change',async e=>{let file=e.target.files[0];if(!file)return;try{importState(JSON.parse(await file.text()))}catch(err){showModal('Cannot import scenario',`<p class="bad">${esc(err.message)}</p>`)}e.target.value='' });
-document.addEventListener('click',e=>{let el=e.target.closest('[data-mode],[data-select],[data-queue],[data-act],[data-preset]');if(!el)return;
- if(el.hasAttribute('data-mode')){let mode=el.getAttribute('data-mode');init(mode,mode==='brb'?4:5,mode==='snapshot'||mode==='clocks'?0:mode==='brb'?1:2);return}
- if(el.hasAttribute('data-select')){selection=Number(el.dataset.select);autoDraft={};render();return}
- if(el.hasAttribute('data-preset')){loadPreset(Number(el.dataset.preset));return}
+document.addEventListener('click',e=>{let el=e.target.closest('[data-mode],[data-select],[data-queue],[data-act]');if(!el)return;
+ if(el.hasAttribute('data-mode')){beginMode(el.dataset.mode);return}
+ if(el.hasAttribute('data-select')){selectProcess(Number(el.dataset.select));return}
  if(el.hasAttribute('data-queue')){let id=Number(el.dataset.qid);switch(el.dataset.queue){case 'deliver':doDeliver(id);break;case 'drop':dropMessage(id);break;case 'dup':duplicateMessage(id);break;case 'edit':showMessageEditor(id);break;case 'up':moveMessage(id,-1);break;case 'down':moveMessage(id,1);break}return}
  if(el.hasAttribute('data-act')){actionFromScenario(el.dataset.act);return}
 });
-document.addEventListener('change',e=>{let el=e.target;if(el.hasAttribute('data-pfield'))setNodeField(el.dataset.pfield,el.value);if(el.id==='focusEdges'){graphFocus=el.checked;renderGraph()}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();undo()} });
-init('paxos',5,2);
+document.addEventListener('change',e=>{let el=e.target;
+ if(S.mode==='trb'&&!S.started && ['source','broadcastVal','trbVariant'].includes(el.id)){
+   if(el.id==='broadcastVal' && (!el.value.trim() || el.value.trim()==='SF')){el.value=S.msgValue;el.setCustomValidity('Enter a message distinct from the reserved symbol SF.');el.reportValidity();el.setCustomValidity('');return}
+   mutate(()=>{if(el.id==='source')S.source=Number(el.value);if(el.id==='broadcastVal')S.msgValue=el.value.trim();if(el.id==='trbVariant')S.options.earlyStopping=el.value==='early'});return;
+ }
+ if(['ballot','candidate','writeValue','amount','recipients','timeout'].includes(el.id)){
+   autoDraft[el.id]=el.value;
+   if(el.id==='timeout'){const n=Number(el.value);if(Number.isFinite(n)&&n>=1) S.heartbeatTimeout=Math.min(100,Math.floor(n));}
+   renderGuide();
+ }
+ if(el.hasAttribute('data-pfield'))setNodeField(el.dataset.pfield,el.value);if(el.id==='focusEdges'){graphFocus=el.checked;renderGraph()}});
+document.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key) && e.target.matches('.graph-node[data-select]')){e.preventDefault();selectProcess(Number(e.target.dataset.select));return}if(e.key==='Escape')closeModal();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();undo()} });
+const courseModes = ['sync','paxos','benor','trb','twopc','threepc','snapshot','clocks','primary','detector'];
+const extras = ['brb','urb'];
+const names = {
+  sync:'Synchronous crash consensus', paxos:'Paxos', benor:'Ben-Or consensus', trb:'Terminating reliable broadcast',
+  twopc:'Two-phase commit', threepc:'Three-phase commit', snapshot:'Chandy–Lamport snapshot', clocks:'Lamport & vector clocks',
+  primary:'Primary–backup replication', detector:'Heartbeat failure detector', brb:'Bracha broadcast', urb:'Eager echo broadcast'
+};
+const goals = {
+  sync:'Each process proposes a number. Watch which values reach each survivor before it decides the smallest one it knows.',
+  trb:'One sender broadcasts a value. Follow who receives it, who relays it, and when a survivor can deliver the sender-failed symbol (SF).',
+  paxos:'Follow one ballot from a proposer’s first request to a majority of acceptors choosing a value.',
+  benor:'Each process starts with a bit. Follow its A and B messages to see when it keeps an estimate, flips a coin, or decides.',
+  snapshot:'Follow the markers to see which token balances and in-flight transfers belong to the same snapshot.',
+  clocks:'Send a timestamped message and compare the sender’s clock with the receiver’s clock before and after it arrives.',
+  twopc:'Watch participants vote and see when the coordinator can commit or must abort.',
+  threepc:'Follow the votes, the precommit, and the acknowledgments that let the coordinator commit.',
+  detector:'Advance the heartbeat clock to see how a process can suspect a crashed peer or a slow one.',
+  primary:'Follow one write from the primary to its backups and back to the primary for acknowledgment.',
+  brb:'Supplemental example. Follow a Byzantine broadcast through INIT, ECHO, and READY messages.',
+  urb:'Supplemental example. Follow a message as each first-time recipient forwards it to its peers.'
+};
+let currentExample = -1;
+function defaultRun(mode){
+  const small = ['sync','trb','clocks','snapshot','brb'].includes(mode);
+  init(mode,small ? (['clocks','snapshot'].includes(mode)?3:4) : 5,
+    ['clocks','snapshot'].includes(mode)?0:small?1:2);
+}
+function chooseExample(index){
+  if(index < 0) defaultRun(S.mode);
+  else {const preset = PRESETS[S.mode]?.[index]; if(!preset) return; preset[2]();}
+  currentExample = index;
+  S.options.example = index;
+  S.options.lastStep = '';
+  undoStack = [];
+  render();
+}
+function toggleSetup(open, focus=false){
+  $('#setup').hidden = !open;
+  $('#setupButton').setAttribute('aria-expanded', String(open));
+  if(open && focus) $('#setup').scrollIntoView({block:'start'});
+}
+function selectProcess(id){
+  selection=id;
+  autoDraft={};
+  render();
+  toggleSetup(true,true);
+}
+function renderStateTable(){
+  const rows=p=>{
+    if(S.mode==='sync')return [['Input',p.input],['Known values',p.known],['Decision',p.decided??'—']];
+    if(S.mode==='trb')return [['Role',p.id===S.source?'Sender':'Receiver'],['Delivered',p.decided??'—'],['Delivery round',p.deliveryRound??'—']];
+    return nodeRows(p);
+  };
+  const headers=['Process','Status',...rows(S.nodes[0]).map(([key])=>key)];
+  const body=S.nodes.map(p=>{
+    const planned=p.crashNext?S.round+1:p.crashRound;
+    const status=!p.alive?'Crashed':p.halted?'Halted':planned>S.round?'Crashes in round '+planned:'Running';
+    const values=rows(p).map(([key,v])=>{
+      if(key==='Known values'){
+        const gained=S.history.at(-1)?.learned?.[p.id]||[];
+        return '<td>'+v.map(value=>gained.includes(value)?'<span class="new-value" title="Learned this round">+'+esc(value)+'</span>':'<span class="known-value">'+esc(value)+'</span>').join(' ')+'</td>';
+      }
+      return '<td>'+esc(v)+'</td>';
+    }).join('');
+    return `<tr class="${p.alive?'':'crashed'}"><td><button class="pick" data-select="${p.id}" aria-label="Edit process P${p.id}">P${p.id}</button></td><td>${esc(status)}</td>${values}</tr>`;
+  }).join('');
+  $('#nodes').innerHTML='<table class="state-table"><thead><tr>'+headers.map(v=>'<th scope="col">'+esc(v)+'</th>').join('')+'</tr></thead><tbody>'+body+'</tbody></table>';
+}
+function renderNavigation(){
+  const button=k=>`<button class="nav ${k===S.mode?'active':''}" ${k===S.mode?'aria-current="page"':''} data-mode="${k}"><span class="txt">${esc(names[k])}</span></button>`;
+  $('#nav').innerHTML=groupOrder.map(group=>'<div class="navgroup">'+group+'</div>'+courseModes.filter(k=>MODES[k].group===group).map(button).join('')).join('');
+  $('#extras').innerHTML=extras.map(button).join('');
+  if(extras.includes(S.mode)) $('#extraNav').open=true;
+  $('#mobileMode').innerHTML='<optgroup label="Course simulations">'+courseModes.map(k=>'<option value="'+k+'">'+names[k]+'</option>').join('')+'</optgroup><optgroup label="Supplemental demos">'+extras.map(k=>'<option value="'+k+'">'+names[k]+'</option>').join('')+'</optgroup>';
+  $('#mobileMode').value=S.mode;
+}
+function beginMode(mode){
+  toggleSetup(false);
+  $('#networkTools').open=false;
+  $('#detailTools').open=false;
+  $('#extraNav').open=extras.includes(mode);
+  defaultRun(mode);
+  window.scrollTo(0,0);
+}
+const deliveries = {
+  PREPARE:['Receive prepare requests','Each available acceptor checks the ballot and replies with its promise or a rejection.'],
+  PROMISE:['Collect promises','After a majority replies, the proposer selects the highest previously accepted value reported, or its own if all report none.'],
+  ACCEPT:['Process accept requests','Each acceptor checks its promise and records the ballot and value if it can accept. A majority accepting the same pair chooses the value.'],
+  ACCEPTED:['Collect accepted replies','The proposer learns the chosen value once a majority acknowledges acceptance.'],
+  NACK:['Receive ballot rejections','The proposer learns that an acceptor has promised a higher ballot.'],
+  A:['Receive A values','Each process uses the first n−f arrivals for its round to form its B value.'],
+  B:['Receive B values','Each process uses its first n−f B values to decide, carry a value forward, or flip its coin.'],
+  VOTE_REQ:['Ask participants to vote','Each participant records its vote and sends a reply to the coordinator.'],
+  VOTE:['Collect votes','A NO forces abort. With all YES votes, 2PC can commit and 3PC can begin precommit.'],
+  PRECOMMIT:['Receive precommit','Prepared participants record precommit and acknowledge it.'],
+  ACK:['Collect precommit acknowledgments','The coordinator checks whether every required participant has acknowledged precommit.'],
+  COMMIT:['Announce commit','Recipients record the coordinator’s commit decision.'], ABORT:['Announce abort','Recipients record the abort decision.'],
+  MARKER:['Receive snapshot markers','A first marker records a process’s balance. Later markers close the corresponding incoming channels.'],
+  TRANSFER:['Receive the transfer','If the receiver already took its snapshot and this channel is open, it records the transfer in the channel state.'],
+  CLOCK:['Receive the timestamped message','The receiver merges the incoming timestamp with its clock and increments its own component.'],
+  HEARTBEAT:['Receive heartbeats','Recipients record the arrival and clear suspicions about the senders they hear from.'],
+  REPLICATE:['Replicate the write','Backups apply the incoming write and send acknowledgments.'],
+  REPL_ACK:['Collect backup acknowledgments','The primary commits the write after all required backups reply.'],
+  REPL_COMMIT:['Notify backups of commit','Each backup advances its committed index.'],
+  INIT:['Receive the sender’s value','Honest first-time recipients can echo the source value.'],
+  ECHO:['Receive echoes','Recipients update their local state using these forwarded messages.'],
+  READY:['Receive READY messages','Honest recipients count distinct senders to determine whether to relay or deliver.'],
+  STATE_REQ:['Request recovery states','Surviving participants report their transaction states.'], STATE:['Collect recovery states','The new coordinator uses the collected states to select a recovery action.'],
+  DECISION_REQ:['Ask peers for a decision','Peers reply with their decision or report uncertainty.'], DECISION:['Receive recorded decisions','Uncertain participants can learn a peer’s decision.'], UNKNOWN:['Receive uncertain replies','These peers have no final transaction decision to report.']
+};
+function nextGuide(){
+  const active=S.nodes.filter(p=>p.alive), p=S.nodes[selection];
+  const ended=(title,hint)=>({title,hint,label:'Finished'});
+  const wait=hint=>({title:'Waiting for progress',hint,label:'Waiting'});
+  const step=(title,hint,label,run)=>({title,hint,label,run});
+  if(!active.length) return wait('All processes are down. Open setup to recover a process or restart the example.');
+  if(['sync','trb'].includes(S.mode)){
+    const trb=S.mode==='trb';
+    if(roundsFinished()){
+      const outputs=active.map(p=>p.decided), values=[...new Set(outputs)];
+      const title=values.length===1 && values[0]!=null ? `Survivors ${trb?'delivered':'decided'} ${values[0]}` : 'Compare the surviving processes';
+      return ended(title,trb?'The delivery round for each survivor is shown below.':'Each survivor applied min to its own set of known values.');
+    }
+    const k=S.round+1;
+    const note=trb?(k===1?`P${S.source} sends “${S.msgValue}”. A receiver can deliver it in this round.`:S.options.earlyStopping?'Processes exchange their current values and track missing senders. Each process checks whether it can safely stop.':'A receiver that just delivered the value relays it. A process still waiting at the final round delivers SF.') :
+      (k===1?'Each process sends its input. Look at how its set of known values changes.':`Each live process forwards values it learned and has yet to send.${k===S.f+1?' At the end of this round, each survivor decides the minimum it knows.':''}`);
+    return step(`Round ${k} of ${S.f+1}`,note,`Run round ${k}`,()=>mutate(syncRound));
+  }
+  const chosenBits=active.every(n=>n.decided!=null);
+  if(S.mode==='benor' && chosenBits) return ended('All live processes decided', 'The table shows each decision. Ben-Or processes may continue sending to help slower peers.');
+  const first=S.queue.find(canDeliver);
+  if(first){
+    const matches=m=>m.type===first.type && m.payload.b===first.payload.b && m.payload.r===first.payload.r && m.payload.seq===first.payload.seq;
+    // Only messages present at the start of this step belong to this wave.
+    const batch=S.queue.filter(m=>matches(m)&&canDeliver(m));
+    const [label,hint]=deliveries[first.type]||['Receive '+first.type,'Apply the pending protocol messages at their recipients.'];
+    const suffix=first.payload.r!=null?' · round '+first.payload.r:first.payload.b!=null?' · ballot '+first.payload.b:'';
+    return step(label+suffix,hint,label,()=>mutate(()=>{
+      for(const m of batch) if(canDeliver(m)) deliver(m.id);
+      S.options.lastStep=`${label}: processed ${batch.length} ${first.type} message${batch.length===1?'':'s'}.`;
+      if(first.type==='PROMISE'){
+        const session=S.nodes[first.to].sessions[first.payload.b];
+        if(session?.chosenValue!=null) S.options.lastStep+=` P${first.to} proposed ${session.proposed} and now requests acceptance of ${session.chosenValue}.`;
+      }
+    }));
+  }
+  switch(S.mode){
+    case 'paxos': {
+      const sessions=S.nodes.flatMap(n=>Object.values(n.sessions));
+      if(sessions.length && sessions.every(s=>s.phase==='chosen'||s.phase==='preempted') && sessions.some(s=>s.phase==='chosen'))return ended('The proposer learned the chosen value', 'The acceptor states below show which ballot and value each process recorded. Start another ballot in setup to test recovery.');
+      if(sessions.length)return wait('The current ballot has no deliverable replies. Inspect blocked links and acceptor promises, or start a higher ballot in setup.');
+      if(!p.alive)return wait('Select a live proposer in setup.');
+      const b=Number(autoDraft.ballot??Math.max(1,S.n+selection,...S.nodes.map(n=>n.promised+1)));
+      const v=autoDraft.candidate??String(p.input);
+      if(!Number.isSafeInteger(b)||b<0||String(v)==='')return wait('Enter a nonnegative integer ballot and a candidate value in setup.');
+      return step('Start a ballot',`P${selection} wants to propose ${v}. It first asks the acceptors to promise ballot ${b}.`,'Send prepare requests',()=>mutate(()=>paxosStart(selection,b,v)));
+    }
+    case 'benor': if(!S.started)return step('Broadcast the initial estimates',`Each live process starts with its input bit and needs ${S.n-S.f} A values for round 1.`,'Send round 1 A values',()=>mutate(benorStart)); break;
+    case 'snapshot':
+      if(snapshotDone()){const t=snapshotTotals();return ended('Snapshot complete',`The cut contains ${t.local} local tokens and ${t.inTransit} tokens in transit, totaling ${t.total}.`);}
+      if(!S.started && p.alive)return step('Record the first local state',`P${selection} records its balance and sends a marker on each outgoing channel.`,'Start snapshot',()=>mutate(()=>snapshotInitiate(selection)));break;
+    case 'twopc': case 'threepc':
+      if(!S.started && alive(0))return step('Open a transaction','P0 requests a vote from each participant. You can change their YES or NO votes in setup.','Request votes',()=>mutate(commitStart));
+      if(S.started && active.every(n=>['COMMITTED','ABORTED'].includes(n.state)))return ended('Transaction finished', 'The table shows the durable outcome at each surviving process.');
+      if(!alive(S.coordinator))return wait(S.mode==='threepc'?'The coordinator crashed. Select a surviving process in setup and elect it to collect states.':'The coordinator crashed. A prepared participant can ask peers in setup. If all peers are uncertain, it must wait for a known decision.');break;
+    case 'clocks':{
+      if(!p.alive)return wait('Select a live sender in setup.');
+      const target=S.nodes.find(n=>n.id!==selection && n.alive);
+      if(!target)return wait('Recover a peer to receive a message, or create a local event in setup.');
+      return step('Send a timestamped message',`P${selection} increments its clock and sends the timestamp to P${target.id}. You can choose a different receiver in setup.`,'Send timestamped message',()=>mutate(()=>clockStep(selection,'SEND',target.id)));}
+    case 'detector':return step('Advance the heartbeat clock',`At tick ${S.heartbeatTick+1}, live processes send heartbeats and check which peers have been silent for ${S.heartbeatTimeout} ticks.`,'Advance one tick',()=>mutate(detectorTick));
+    case 'primary':
+      if(S.history.length && active.every(n=>n.committed>=S.history.at(-1).seq))return ended('Write replicated', 'Inspect each replica’s committed index, or start a new write in setup.');
+      if(!alive(S.coordinator))return wait('The primary is down. Choose a backup in setup to explore promotion.');
+      if(!Object.keys(S.nodes[S.coordinator].pendingWrites).length)return step('Issue a write',`P${S.coordinator} sends the new value to the backups.`,'Write value '+(autoDraft.writeValue??'99'),()=>mutate(()=>primaryWrite(autoDraft.writeValue??'99')));break;
+    case 'brb': case 'urb':
+      if(!S.started && p.alive)return step('Broadcast the source value',`P${selection} sends ${S.msgValue} to its peers.`,'Broadcast value',()=>mutate(()=>S.mode==='brb'?brbStart(selection,S.msgValue):urbStart(selection,S.msgValue,S.nodes.filter(n=>n.id!==selection).map(n=>n.id))));
+      if(active.filter(n=>!n.byzantine).length && active.filter(n=>!n.byzantine).every(n=>n.delivered!=null))return ended('All correct recipients delivered','Each recipient’s delivered value appears below.');break;
+  }
+  return wait('There are no deliverable messages. Inspect the process states, crash status, and network links in setup or select another example.');
+}
+function renderGuide(){
+  const guide=nextGuide(), manual=extras.includes(S.mode);
+  $('#guideProgress').textContent=`${S.n} processes · f = ${S.f}`+(S.mode==='sync'?` · f + 1 = ${S.f+1} rounds`:S.mode==='paxos'?` · majority = ${quorum()}`:S.mode==='trb'?(S.options.earlyStopping?' · early stopping':' · basic TRB'):'');
+  $('#guideTitle').textContent=guide.title;
+  $('#guideHint').textContent=guide.hint;
+  $('#runAction').textContent=guide.label;
+  $('#runAction').disabled=!guide.run;
+  $('#lastStep').textContent=S.options.lastStep||'';
+  $('#undoAction').disabled=!undoStack.length;
+  $('#example').innerHTML='<option value="-1">Default run</option>'+(PRESETS[S.mode]||[]).map(([title],i)=>`<option value="${i}">${esc(title)}</option>`).join('');
+  $('#example').value=String(currentExample);
+  $('#exampleInfo').textContent=PRESETS[S.mode]?.[currentExample]?.[1]||'';
+  $('#processPicker').innerHTML=S.nodes.map(n=>`<option value="${n.id}">P${n.id}</option>`).join('');
+  $('#processPicker').value=String(selection);
+  $('#asyncTools').hidden=!isAsync();
+  $('#networkLabel').textContent=isAsync()?'Network and message scheduling':'Round history and network';
+  $('#sourceLink').textContent=manual?(S.mode==='brb'?'Supplemental reading ↗':'Course schedule ↗'):S.mode==='detector'?'Course schedule ↗':'Lecture notes ↗';
+  $('#sourceLink').href=S.mode==='trb' && S.options.earlyStopping ? MODES.trb.url.split('#')[0]+'#page=50' : MODES[S.mode].url;
+}
+
+defaultRun('sync');
 </script></body></html>

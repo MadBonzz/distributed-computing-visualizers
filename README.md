@@ -1,68 +1,35 @@
-# Distributed Algorithms — Failure Lab
+# Distributed Algorithms Failure Lab
 
-An offline, interactive browser workbench for exploring adversarial executions of distributed algorithms from Cornell CS 5414 (Fall 2026), plus a supplemental Byzantine reliable-broadcast algorithm.
+Interactive simulations for Cornell CS 5414, Fall 2026. [Open the lab](https://distributed-computing-visualizers.vercel.app/) or download [the standalone HTML file](./distributed_failure_lab.html) and open it in your browser.
 
-## Run
+## Try synchronous consensus
 
-Open `distributed_failure_lab.html` in Chrome, Firefox, or Edge. No server, packages, login, or internet are needed after download. Everything executes locally inside this one HTML file.
+The lab opens with four processes and a crash bound of one. Click **Run round 1** to exchange inputs. A **+** in the table marks a value learned in that round. Click **Run round 2** to see each survivor decide the minimum value it knows.
 
-## Start with the edge-case library
+Choose **Dangerous chain across rounds** in the **Example** menu. P0 starts with 0 and the other processes start with 1. In round 1, P0 sends only to P1 and crashes. In round 2, P1 sends only to P2 and crashes. Check P3’s known values before running round 3. **Undo step** takes you back one action so you can change the execution.
 
-1. Choose a protocol from the left sidebar.
-2. Click **Edge cases** to load a state designed to expose a particular correctness or liveness condition.
-3. Change `n` and `f` (click **Apply / reset**), edit a node by selecting it, and/or crash/recover nodes.
-4. In asynchronous protocols, pick individual messages and choose **Deliver**, **Drop**, **Duplicate**, **Edit**, or **↑/↓** to reorder. **Edit** lets you inject a Byzantine-like corrupted or forged message.
-5. Use **Deliver next**, **Deliver 20**, or **Random 20** when you want the system to progress.
-6. In synchronous protocols, instead use **Next round** and configure nodes to crash after sending to chosen recipients.
-7. Watch the network diagram, durable state, event trace, and property checks. Use **Undo** and **Export state** to branch experiments. **Import state** loads saved JSON runs.
+## Change an execution
 
-## Included workbenches
+- Select a process in the table to edit its input, state, or failure. **Edit setup & failures** also contains process counts, the fault bound, and protocol-specific actions.
+- In synchronous consensus and TRB, one click runs one round. Open **Round history and network** to inspect which messages were sent.
+- In message-driven simulations, each guided step processes a group of currently deliverable messages of one type, ballot, or round. Open **Network and message scheduling** between steps to deliver one message, reorder replies, or inject faults. The guided and manual controls act on the same execution.
+- Open **Execution trace and property checks** to inspect events or save and load an execution as JSON. An assumption check applies to the execution being inspected. Manual state edits can create configurations outside the protocol’s fault model.
 
-| Algorithm | What you can explore |
+## Simulations
+
+| Simulation | Experiment |
 | --- | --- |
-| Single-decree Paxos | Multiple proposer ballots; promise/accept/accepted; durable accepted ballots and values; quorum intersection; majority failures; leader preemption and recovery |
-| Ben-Or randomized consensus | Initial binary inputs; first n−f A/B arrivals; adversarial scheduling; crash faults; coin override; probabilistic termination |
-| Synchronous crash consensus | f+1 rounds; min-value flooding; adversarial dangerous chains; mid-round partial sends and crashes |
-| Terminating reliable broadcast (TRB) | Distinguished sender; relaying; sender crash after partial transmission; delivery of value or SF at f+1 |
-| Bracha Byzantine reliable broadcast | Byzantine equivocation; authenticated sender identities; INIT/ECHO/READY; n > 3f; corrupt ECHO/READY messages; Byzantine sender non-termination |
-| Crash-fault eager echo broadcast | Relaying a message after its sender crashes; comparison to TRB |
-| Chandy–Lamport snapshot | FIFO channels; markers; local state, in-transit messages and conservation of transferred tokens |
-| Lamport and vector clocks | Local/send/receive events; interleaving; scalar versus vector timestamps |
-| Two-phase commit (2PC) | YES/NO votes; durable decision log; uncertainty; coordinator crash; cooperative termination and blocking |
-| Three-phase commit (3PC) | PRECOMMIT/ACK, coordinator failure, replacement election, collection of participant states, recovery decisions |
-| Heartbeat failure detector | False suspicions from delayed messages; threshold selection; actual crash detection |
-| Primary–backup (illustrative) | Replicated write acknowledgement; crash and unsafe promotion of a stale backup; lost-update risk without fencing |
+| Synchronous crash consensus | Change inputs and arrange partial sends to see why a hidden minimum can take f + 1 rounds to propagate. |
+| Terminating reliable broadcast | Crash the sender before or during its send. Compare immediate delivery of the value, relaying in the following round, and delivery of SF. Switch between basic and early-stopping TRB in setup. |
+| Paxos | Load **Chosen A, two acceptors crash**. P3 wants B at ballot 9. Inspect how P2’s persisted acceptance of A affects P3’s choice after its promises arrive. |
+| Ben-Or consensus | Change binary inputs, the first n − f replies, or the coin outcomes at individual processes. The guided action advances the current A or B messages. |
+| Two-phase commit | Have a participant vote NO, or crash the coordinator after participants log YES. Ask peers whether anyone has a final decision. |
+| Three-phase commit | Deliver PRECOMMIT to one participant, crash the coordinator, then elect a survivor to collect states. The recovery model assumes reliable communication and knowledge of which processes survived. |
+| Chandy–Lamport snapshot | Deliver a transfer after the receiver records its balance and before the incoming channel closes. Inspect the recorded in-transit tokens. |
+| Lamport and vector clocks | Compare local, send, and receive events at different processes. |
+| Primary–backup replication | Follow a write and its acknowledgments. The stale-backup promotion example illustrates an unfenced failover. |
+| Heartbeat failure detector | Compare a crashed peer with a healthy peer whose heartbeats arrive late. This is an illustrative timeout-based detector. |
 
-## Suggested high-value experiments
+**Supplemental demos** contains Bracha Byzantine reliable broadcast and eager echo broadcast. These were added for comparison. The course broadcast section contains TRB.
 
-**Paxos — previously chosen value after crash**: Open Paxos → Edge cases → *Chosen A, two acceptors crash*. The acceptors P0, P1, P2 persist ballot 5 and value A (a majority of five). P0 and P1 are crashed. Select P3, set ballot 9 and desired value B, then start PREPARE. Deliver the promises and watch P3 adopt A, even though its own desired value is B.
-
-**Paxos — not chosen yet**: Load *Partially accepted, not chosen* and see how a new proposer can choose B if no majority accepted A.
-
-**2PC blocking**: Load *Everyone YES, coordinator crashes*. Ask peers for a decision. All survivors remain PREPARED because no one knows whether the coordinator logged COMMIT or ABORT.
-
-**3PC leader change**: Load *Crash after partial PRECOMMIT*. P1 is committable; P2 and P3 are uncertain. Elect P1, then deliver STATE_REQ/STATE replies, PRECOMMIT and ACK to finish the transaction.
-
-**Chandy–Lamport channel cut**: Load *Message in transit*. P1 sent four tokens before P0 took a snapshot, but P0 records its local state first. Deliver P1→P0 TRANSFER before P1→P0 MARKER. The transfer appears in the channel-state record instead of P0's recorded local balance.
-
-**Bracha**: Load *Byzantine source equivocates*. P0 sends A to two peers and B to another, while also injecting ECHO(A). Even a Byzantine origin cannot cause honest recipients to deliver conflicting values, given n > 3f and reliable authenticated links.
-
-## Model boundaries — important
-
-This is a **single-run executable teaching simulator**, not an exhaustive model checker or a formal proof engine. It permits manually seeded states that may be unreachable under a correct implementation. The monitors identify conflicting visible decisions, bad fault bounds, and other obvious violations, but passing them on one trace is not a correctness proof.
-
-- Chandy–Lamport assumes reliable FIFO channels and no process crashes.
-- The synchronous consensus and TRB examples assume synchronous rounds, reliable correct-process links, and at most f crash failures. Crash-in-round partial sends are possible; arbitrary corruption and partitions are outside their correctness model.
-- Single-decree Paxos requires unique ballots and durable acceptor promises/accepted values; eventual progress additionally requires a stable successful proposer and a reachable majority.
-- Ben-Or in this version requires f < n/2, fair delivery and independent fair coins for almost-sure termination. Manually overriding coins is useful for counterexamples but changes the probabilistic assumption.
-- 2PC's uncertainty can genuinely block after all participants vote YES. Durable log state is retained through crashes.
-- 3PC's state-collection recovery is a **simplified crash-only teaching variant** requiring accurate knowledge of operational processes and dependable timely communication. Arbitrary network partitions can make 3PC unsafe.
-- Bracha requires n > 3f, authenticated message sender identities, reliable delivery between correct nodes, and at most f Byzantine/crashed processes. It is a reliable broadcast protocol, not Byzantine agreement/total order consensus.
-- The eager echo and primary–backup workbenches illustrate mechanisms and failure modes; they are not complete production-grade protocols.
-- Manually changing arbitrary messages or raw states can violate each algorithm's model assumptions. That is deliberate for studying what breaks.
-
-## Source lectures
-
-Fall 2026 schedule: https://www.cs.cornell.edu/courses/cs5414/2026fa/schedule.html
-
-The app links from each algorithm to its related lecture PDF. Bracha's Byzantine reliable broadcast is supplemental: https://algorithm.tamnd.com/bracha-reliable-broadcast/
+[Fall 2026 course schedule](https://www.cs.cornell.edu/courses/cs5414/2026fa/schedule.html) · [Synchronous consensus, slide 30](https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week6.pdf#page=30) · [Basic TRB, slide 47](https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week6.pdf#page=47) · [Early-stopping TRB, slide 50](https://www.cs.cornell.edu/courses/cs5414/2026fa/notes/Week6.pdf#page=50)

@@ -4,7 +4,7 @@ Interactive simulations for Cornell CS 5414, Fall 2026. [Open the lab on Vercel]
 
 Select a simulation and press the green button to run the next protocol step. Click a node or its row on the right to change its inputs, crash or recover it, and inspect what it has received. Click a connection to cut it in both directions. Click again to restore it. In asynchronous protocols, a cut holds messages until their link is restored. In synchronous protocols, a cut can prevent that round’s value from reaching a peer.
 
-A node with queued messages has a **Receive** button. Pick the sender and message to let one participant advance before the others. **Undo** reverses the most recent step or edit. **Restart** returns to the starting configuration for the execution. **Settings** changes the node count and fault bound. The queue, trace, assumption checks and JSON import/export are below the graph.
+A node with queued messages has a **Receive** button. Pick the sender and message to let one participant advance before the others. **Undo** reverses the most recent step or edit. **Restart** returns to the starting configuration for the execution. Set **Nodes (n)** and **Fault bound (f)** beside the Run button, then choose **Apply & restart** to start a fresh run with those values. The queue, trace, assumption checks and JSON import/export are below the graph.
 
 ## Two runs to try
 

@@ -125,6 +125,12 @@ button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visi
  .protocol-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 20px 6px;color:#3e5849;font-size:12px}.protocol-tools input,.protocol-tools select,.source-form input:not([type=checkbox]),.source-form select,.inbox select{padding:4px 5px;border:1px solid #bacbc0;border-radius:5px;background:white;color:#253b2c}.protocol-tools input{width:46px}.protocol-tools button{font-size:12px;padding:4px 8px}.compare-events{display:flex;align-items:center;flex-wrap:wrap;gap:5px}.compare-events output{width:100%;color:#27543b}
 .state-detail{width:100%;font:11px/1.45 "Segoe UI",sans-serif;text-align:right;color:#506754}.source-form,.inbox{margin:10px 0;display:grid;gap:6px;font-size:12px}.source-form label{display:flex;align-items:center;gap:5px}.source-form input:not([type=checkbox]){min-width:0;width:60%}.source-form fieldset{border:0;padding:0;display:flex;gap:6px;flex-wrap:wrap}.source-form legend{padding:0;margin-bottom:3px}.inbox>div{display:flex;gap:4px}.inbox select{min-width:0;flex:1}.inbox button,.source-form button{font-size:12px;padding:5px}.node-receipts{padding:6px 0;color:#506754;font-size:12px}.workbench:not(.paxos):not(.benor) .values-pane{min-width:0}
 .arrival-dot{fill:#f3ab48;stroke:#634b25;stroke-width:1;pointer-events:none}.half-cut{fill:none;stroke:#b3594c;stroke-width:3;stroke-dasharray:6 5;pointer-events:none}.local-receipts div{color:#425a4a;padding:2px 0;overflow-wrap:anywhere}
+.transport{flex-wrap:wrap;justify-content:flex-start}
+#networkConfig{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0;padding-left:14px;border-left:1px solid var(--border)}
+#networkConfig label{display:inline-flex;gap:5px;align-items:center;white-space:nowrap;font-size:13px;color:#314d40}
+#networkConfig input{box-sizing:border-box;width:51px;height:34px;padding:5px 4px 5px 7px;background:#fff;color:#203b2d;border:1px solid #aabeb0;border-radius:6px;font:600 14px ui-monospace,Consolas,monospace}
+#guideProgress{margin-left:auto}
+@media(max-width:780px){#networkConfig{order:1;flex-basis:100%;padding:7px 0 0;border-left:0;border-top:1px solid var(--border);gap:6px 10px}#networkConfig button{padding:6px 9px}}
 </style></head><body>
 <div class="shell">
   <header class="mast"><div class="mast-inner">
@@ -137,11 +143,16 @@ button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visi
     <div class="scenario-controls"><label class="scenario-choice"><span>Example</span><select id="example"></select></label><button id="setupButton" aria-controls="setup" aria-expanded="false">Settings</button></div></div>
     <div id="exampleInfo" class="example-info"></div>
     <section class="panel settings" id="setup" hidden><div class="panel-head"><h2>Simulation settings</h2><button id="closeSetup">Close</button></div><div class="panel-body">
-      <div class="config"><label for="ninput">Nodes (n)</label><input class="number" id="ninput" type="number" min="2" max="10"><label for="finput">Crash bound (f)</label><input class="number" id="finput" type="number" min="0" max="9"><button id="applyConfig">Apply and reset</button></div>
       <details id="advancedSetup"><summary>Process state and protocol actions</summary><div class="settings-grid"><div><label class="field">Process<select id="processPicker"></select></label><div id="inspector"></div></div><div id="scenario"></div></div></details>
     </div></section>
     <section class="workbench" aria-label="Interactive network">
-      <div class="transport"><div class="step-actions"><button class="go" id="runAction"></button><button id="undoAction" title="Undo the last edit or round">Undo</button><button id="resetAction" title="Return to the start of this execution">Restart</button></div><div class="slot-tools" id="slotTools" hidden><label for="slotPick">Slot</label><select id="slotPick"></select><button id="addSlot">+ Slot</button></div><div class="round-readout" id="guideProgress"></div></div>
+      <div class="transport"><div class="step-actions"><button class="go" id="runAction"></button><button id="undoAction" title="Undo the last edit or round">Undo</button><button id="resetAction" title="Return to the start of this execution">Restart</button></div>
+        <form id="networkConfig" aria-label="Network parameters">
+          <label>Nodes (n) <input id="ninput" type="number" min="2" max="10" step="1" required></label>
+          <label>Fault bound (f) <input id="finput" type="number" min="0" max="9" step="1" required></label>
+          <button type="submit" id="applyConfig">Apply &amp; restart</button>
+        </form>
+        <div class="slot-tools" id="slotTools" hidden><label for="slotPick">Slot</label><select id="slotPick"></select><button id="addSlot">+ Slot</button></div><div class="round-readout" id="guideProgress"></div></div>
       <div class="workarea">
         <div class="diagram"><div class="graph-heading"><h2>Network</h2><span id="netCounts"></span></div>
           <div id="graph" aria-label="Network topology"></div>
@@ -200,7 +211,7 @@ function broadcast(from,type,payload={},recipients=null){(recipients||Array.from
 function numberOr(v,d=0){let x=Number(v);return Number.isFinite(x)?x:d}
 function baseNode(i){return {id:i,alive:true,input:i%2,value:i%2, vote:'YES',state:'INIT',decided:null,log:[],promised:-1,acceptedB:-1,acceptedV:null,sessions:{}, learned:null,local:10,recorded:false,snapshotLocal:null,channels:{},closed:{},clock:0,vector:[],recvA:{},recvB:{},round:1,phase:'idle',a:i%2,b:null,coin:'random',sent:{},byzantine:false,echoed:null,readied:null,firstInit:null,echos:{},readies:{},known:new Set(),partial:'',crashNext:false,last:{},suspects:[],logIndex:0,committed:0,pendingWrites:{},role:'backup',delivered:null,heard:false}}
 function init(mode='paxos',n=5,f=2){n=Math.max(2,Math.min(10,Math.trunc(numberOr(n,5))));f=Math.max(0,Math.min(n-1,Math.trunc(numberOr(f,2))));let m=MODES[mode]?mode:'paxos';S={mode:m,n,f,nodes:Array.from({length:n},(_,i)=>baseNode(i)),queue:[],logs:[],seq:0,time:0,started:false,round:0,chosen:[],initialTotal:n*10,coordinator:0,election:null,source:0,msgValue:'DATA',protocolFaults:[],heartbeatTick:0,heartbeatTimeout:2,network:{},voteRecord:{},crashed:0,history:[],options:{}};
- currentExample=-1;restartPoint=null;dismissNode();normalizePaxos(S);
+ currentExample=-1;restartPoint=null;dismissNode();normalizePaxos(S);resetNetworkForm();
  S.nodes.forEach(p=>{if(m==='sync')p.input=([3,1,4,2][p.id]??p.id+1);p.vector=Array(n).fill(0);p.known=[p.input];p.last={};p.sent={};p.partial='';p.role=p.id===0?'primary':'backup';p.committed=0;for(let j=0;j<n;j++){if(j!==p.id){p.closed[j]=false;p.channels[j]=[]}p.last[j]=0}});if(mode==='trb')S.nodes.forEach(p=>p.known=[]);if(mode==='urb')S.nodes.forEach(p=>p.known=[]);if(mode==='benor')S.nodes.forEach(p=>p.phase='idle');if(mode==='detector')S.nodes.forEach(p=>p.suspects=[]);if(mode==='primary')S.nodes.forEach(p=>{p.state='READY';p.value='0'});undoStack=[];selection=0;autoDraft={};log(`New ${MODES[m].name} · n=${n}, f=${f}`,'note');render()}
 function canDeliver(m){if(!alive(m.to)||S.network[m.from+'-'+m.to])return false;if(S.mode==='snapshot'){let prior=S.queue.some(q=>q.id<m.id&&q.from===m.from&&q.to===m.to);if(prior)return false;}return true}
 function deliver(id){let idx=S.queue.findIndex(x=>x.id===id);if(idx<0)return;let msg=S.queue[idx];if(!canDeliver(msg)){log(`Cannot deliver #${id}: receiver down, link blocked or FIFO predecessor outstanding`,'alert');return}S.queue.splice(idx,1);receiving?.push({from:msg.from,to:msg.to,type:msg.type,payload:msg.payload});log(`✓ #${id} ${idname(msg.from)} → ${idname(msg.to)} ${msg.type}${msg.payload.slot!=null?' · slot '+msg.payload.slot:''}`);handleMessage(msg);}
@@ -666,8 +677,6 @@ function render(){
   const mode = MODES[S.mode];
   $('#modeTitle').textContent=names[S.mode];
   $('#modeDesc').textContent=goals[S.mode];
-  $('#ninput').value=S.n;
-  $('#finput').value=S.f;
   $('#modeHelp').innerHTML=mode.help;
   renderGuide();
   renderNavigation();
@@ -687,7 +696,7 @@ function render(){
 // ─── CONTROLS, export/import, and replay ───
 function undo(){if(!undoStack.length)return;S=JSON.parse(undoStack.pop());selection=Math.min(selection,S.n-1);render()}
 function exportState(){const blob=new Blob([JSON.stringify({schema:'failurelab-v1',state:S},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`failure-lab-${S.mode}-${new Date().toISOString().slice(0,10)}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function importState(data){if(!data||data.schema!=='failurelab-v1'||!data.state||!MODES[data.state.mode])throw Error('Not a Failure Lab export');let next=data.state;if(!Number.isInteger(next.n)||next.n<2||next.n>10||!Array.isArray(next.nodes)||next.nodes.length!==next.n||!Array.isArray(next.queue))throw Error('Invalid node or queue data');normalizePaxos(next);S=next;dismissNode();S.options??={};undoStack=[];selection=0;autoDraft={};restartPoint=null;currentExample=S.options.example??-1;
+function importState(data){if(!data||data.schema!=='failurelab-v1'||!data.state||!MODES[data.state.mode])throw Error('Not a Failure Lab export');let next=data.state;if(!Number.isInteger(next.n)||next.n<2||next.n>10||!Array.isArray(next.nodes)||next.nodes.length!==next.n||!Array.isArray(next.queue))throw Error('Invalid node or queue data');normalizePaxos(next);S=next;resetNetworkForm();dismissNode();S.options??={};undoStack=[];selection=0;autoDraft={};restartPoint=null;currentExample=S.options.example??-1;
  if(S.mode==='trb' && S.started && S.round>0) for(const p of S.nodes){
    if(p.deliveryRound===undefined && p.known.length && p.alive){p.decided=p.known[0];p.deliveryRound=S.round;}
  }render()}
@@ -738,7 +747,7 @@ $('#undoAction').addEventListener('click',undo);
 $('#resetAction').addEventListener('click',()=>{
   if(!restartPoint){if(currentExample>=0)chooseExample(currentExample);else init(S.mode,S.n,S.f);return}
   S=structuredClone(restartPoint.state);selection=restartPoint.selection;autoDraft={...restartPoint.draft};
-  currentExample=restartPoint.example;undoStack=[];restartPoint=null;render();
+  currentExample=restartPoint.example;undoStack=[];restartPoint=null;resetNetworkForm();render();
 });
 $('#setupButton').addEventListener('click',()=>toggleSetup($('#setup').hidden));
 $('#closeSetup').addEventListener('click',()=>{toggleSetup(false);$('#setupButton').focus()});
@@ -747,7 +756,23 @@ $('#example').addEventListener('change',e=>chooseExample(Number(e.target.value))
 $('#mobileMode').addEventListener('change',e=>beginMode(e.target.value));
 $('#exportAction').addEventListener('click',exportState);
 $('#importAction').addEventListener('click',()=>$('#importFile').click());
-$('#applyConfig').addEventListener('click',()=>init(S.mode,Number($('#ninput').value),Number($('#finput').value)));
+function resetNetworkForm(){
+  $('#ninput').value=S.n;
+  $('#finput').value=S.f;
+  $('#finput').max=S.n-1;
+}
+function networkParamsChanged(){
+  return $('#ninput').valueAsNumber!==S.n || $('#finput').valueAsNumber!==S.f;
+}
+$('#networkConfig').addEventListener('input',()=>{
+  const n=$('#ninput');
+  $('#finput').max=n.validity.valid?n.valueAsNumber-1:9;
+  renderGuide();
+});
+$('#networkConfig').addEventListener('submit',e=>{
+  e.preventDefault();
+  if(networkParamsChanged())init(S.mode,$('#ninput').valueAsNumber,$('#finput').valueAsNumber);
+});
 
 $('#clearLog').addEventListener('click',()=>mutate(()=>S.logs=[]));
 $('#closeModal').addEventListener('click',closeModal);$('#modalback').addEventListener('click',e=>{if(e.target===$('#modalback'))closeModal()});
@@ -969,7 +994,9 @@ function renderGuide(){
   if(!isAsync())$('#guideProgress').textContent='Round '+S.round+' / '+(S.f+1)+' · f = '+S.f;
   reportState(guide);
   $('#runAction').textContent=guide.label;
-  $('#runAction').disabled=!guide.run;
+  const pending=networkParamsChanged();
+  $('#applyConfig').disabled=!pending;
+  $('#runAction').disabled=!guide.run||pending;
 
   $('#undoAction').disabled=!undoStack.length;
   $('#example').innerHTML='<option value="-1">Default run</option>'+(PRESETS[S.mode]||[]).map(([title],i)=>`<option value="${i}">${esc(title)}</option>`).join('');
